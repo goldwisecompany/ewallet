@@ -81,6 +81,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -128,9 +129,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ewallet"
+        multiDexEnabled true
+        applicationId "com.ewallet.prance"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        missingDimensionStrategy 'react-native-camera', 'general'
         versionCode 1
         versionName "1.0"
     }
@@ -149,6 +152,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            storeFile file(properties.get('MYAPP_RELEASE_STORE_FILE'))
+            storePassword properties.get('MYAPP_RELEASE_STORE_PASSWORD')
+            keyAlias properties.get('MYAPP_RELEASE_KEY_ALIAS')
+            keyPassword properties.get('MYAPP_RELEASE_KEY_PASSWORD')
+        }
     }
     buildTypes {
         debug {
@@ -157,7 +168,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

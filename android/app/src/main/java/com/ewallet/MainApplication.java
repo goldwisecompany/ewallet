@@ -1,4 +1,4 @@
-package com.ewallet;
+package com.ewallet.prance;
 
 import android.app.Application;
 import android.content.Context;

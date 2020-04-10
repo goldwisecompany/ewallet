@@ -1,4 +1,4 @@
-package com.ewallet;
+package com.ewallet.prance;
 
 import com.facebook.react.ReactActivity;
 
