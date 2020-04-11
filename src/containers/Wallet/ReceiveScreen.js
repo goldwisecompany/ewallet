@@ -3,11 +3,11 @@ import {
   Alert,
   Clipboard,
   View,
-  Platfrom,
   Share,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+// import {Picker} from '@react-native-community/picker';
 import {connect} from 'react-redux';
 import {Icon, Text} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
