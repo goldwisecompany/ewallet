@@ -44,6 +44,7 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
             {label: 'ETH', value: 'ETH'},
             {label: 'TRX', value: 'TRX'},
           ]}
+          useNativeAndroidPickerStyle={false}
           Icon={() => {
             return <Ionicons name="md-arrow-down" size={20} color="gray" />;
           }}

@@ -9,16 +9,23 @@ const Api = new CryptoNewsApi('389b9cbc389a81600771e47dd922ab52');
 
 const NewsScreen = ({navigation}) => {
   const [articles, setArticles] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     Api.getTopNews()
       .then(articlesData => {
         setArticles(articlesData);
+        setRefreshing(false);
       })
       .catch(error => {
         console.log(error);
+        setRefreshing(false);
       });
-  }, []);
+  }, [refreshing]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+  };
 
   const keyExtractor = (item, index) => index.toString();
 
@@ -41,6 +48,8 @@ const NewsScreen = ({navigation}) => {
         keyExtractor={keyExtractor}
         data={articles}
         renderItem={renderItem}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
       />
     </View>
   );
@@ -49,6 +58,7 @@ const NewsScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   image: {
     width: 100,
