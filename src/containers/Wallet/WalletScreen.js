@@ -30,7 +30,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
   });
 
   const [priceList, setPriceList] = useState({
-    PRN: '0.1',
+    PRN: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
@@ -56,8 +56,11 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
   useEffect(() => {
     web3.eth.accounts.wallet.add(myWallets[current].ETH.privateKey);
     getEthBalance();
-    // navigation.addListener('willFocus', payload => getEthBalance());
-  }, [refreshing]);
+    const unsubscribe = navigation.addListener('focus', payload => {
+      setRefreshing(true);
+    });
+    return unsubscribe;
+  }, [refreshing, navigation]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -96,45 +99,28 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
 
   const getEthBalance = async () => {
     try {
-      const [weiBalance, sunBalance] = await Promise.all([
-        web3.eth.getBalance(myWallets[current].ETH.address),
-        tronWeb.trx.getBalance(myWallets[current].TRX.address),
-      ]);
+      const [weiBalance, sunBalance, {balance: bchBalance}] = await Promise.all(
+        [
+          web3.eth.getBalance(myWallets[current].ETH.address),
+          tronWeb.trx.getBalance(myWallets[current].TRX.address),
+          bitbox.Address.details(myWallets[current].BCH.address),
+        ],
+      );
+      let btcSatoshiBalance = 0;
 
-      let btcResponse, bchResponse;
       try {
-        btcResponse = await fetch(
+        const btcResponse = await fetch(
           `https://api.blockcypher.com/v1/btc/main/addrs/${
             myWallets[current].BTC.address
           }/balance`,
         );
-      } catch (error) {
-        btcResponse = undefined;
-      }
-
-      try {
-        bchResponse = await fetch(
-          `https://bch-chain.api.btc.com/v3/address/${bitbox.Address.toLegacyAddress(
-            myWallets[current].BCH.address,
-          )}`,
-        );
-      } catch (error) {
-        bchResponse = undefined;
-      }
-
-      let btcSatoshiBalance = 0;
-      let bchSatoshiBalance = 0;
-      if (btcResponse !== undefined) {
-        const {balance} = await btcResponse.json();
-        btcSatoshiBalance = balance;
-      }
-
-      if (bchResponse !== undefined) {
-        const {data} = await bchResponse.json();
-        if (data) {
-          const balance = data.balance;
-          bchSatoshiBalance = balance;
+        const data = await btcResponse.json();
+        if (data && data.error) {
+          throw new Error(data.error);
         }
+        btcSatoshiBalance = data.balance;
+      } catch (error) {
+        btcSatoshiBalance = 0;
       }
 
       const tokenContract = new web3.eth.Contract(
@@ -152,10 +138,6 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         btcSatoshiBalance,
       ).toString();
 
-      const bchBalance = bitbox.BitcoinCash.toBitcoinCash(
-        bchSatoshiBalance,
-      ).toString();
-
       const prnBalance = bitbox.BitcoinCash.toBitcoinCash(
         prnbalance,
       ).toString();
@@ -167,7 +149,12 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         TRX: trxBalance,
         PRN: prnBalance,
       });
-      const priceData = await getPrice();
+      let priceData = [];
+      try {
+        priceData = await getPrice();
+      } catch (error) {
+        console.log(error);
+      }
       if (priceData.length !== 0) {
         setPriceList({
           PRN: 0.1 * Number(prnBalance),
@@ -186,15 +173,20 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
           ).toFixed(2),
         );
       }
-      const currencyResponse = await fetch(
-        'https://www.freeforexapi.com/api/live?pairs=USDCNY,USDIDR,USDINR,USDJPY,USDKRW,USDMYR,USDSGD,USDTWD,USDUSD',
-      );
-      const {rates} = await currencyResponse.json();
-      let newRates = {};
-      Object.keys(rates).forEach(key => {
-        newRates[key.substring(3, 6)] = rates[key].rate;
-      });
-      setRatesList(newRates);
+      try {
+        const currencyResponse = await fetch(
+          'https://www.freeforexapi.com/api/live?pairs=USDCNY,USDIDR,USDINR,USDJPY,USDKRW,USDMYR,USDSGD,USDTWD,USDUSD',
+        );
+        const {rates} = await currencyResponse.json();
+        let newRates = {};
+        Object.keys(rates).forEach(key => {
+          newRates[key.substring(3, 6)] = rates[key].rate;
+        });
+        console.log('thanks');
+        setRatesList(newRates);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log(error.message, 'error');
     }
@@ -219,11 +211,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         navigation.navigate('TransactionHistory', {
           coin: item,
           balance: balances[item],
-          balancePrice: (
-            ratesList[currency] *
-            priceList[item] *
-            Number(balances[item])
-          ).toFixed(2),
+          balancePrice: (ratesList[currency] * priceList[item]).toFixed(2),
         })
       }
       bottomDivider

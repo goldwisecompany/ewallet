@@ -68,7 +68,7 @@ const WalletManagementScreen = ({
         type="solid"
         onPress={() => navigation.navigate('PinCode')}
       />
-      <View style={{height: 0.5, backgroundColor: 'gray', margin: 15}} />
+      <View style={{height: 20}} />
     </View>
   );
 

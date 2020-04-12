@@ -333,6 +333,62 @@ export const transferEth = async (receiver, amount, sender, privateKey) => {
   }
 };
 
+// TODO: recovery phrase
+export const transferBch = async (receiver, amount, sender, mnemonic) => {
+  const transactionBuilder = new bitbox.TransactionBuilder('mainnet');
+  try {
+    // Utxo
+    const utxo = await bitbox.Address.utxo(
+      '1M1FYu4zuVaxRPWLZG5CnP8qQrZaqu6c2L',
+    );
+    let balance = 0;
+    utxo.utxos.every((item, index) => {
+      balance += item.satoshis;
+      transactionBuilder.addInput(item.txid, index);
+    });
+
+    const amountInSatoshi = bitbox.BitcoinCash.toSatoshi(amount);
+    const byteCount = bitbox.BitcoinCash.getByteCount({P2PKH: 1}, {P2PKH: 2});
+    const sendAmount = amountInSatoshi - byteCount;
+    transactionBuilder.addOutput(receiver, sendAmount);
+    // Change
+    transactionBuilder.addOutput(sender, balance - sendAmount - byteCount);
+
+    // Sign
+    const seedBuffer = bitbox.Mnemonic.toSeed(mnemonic);
+    // create HDNode from seed buffer
+    const hdNode = bitbox.HDNode.fromSeed(seedBuffer);
+    // keypair
+    let keyPair = bitbox.HDNode.toKeyPair(hdNode);
+    // empty redeemScript variable
+    console.log(keyPair, 'keypair');
+    let redeemScript;
+    // sign w/ keyPair
+    transactionBuilder.sign(
+      0,
+      keyPair,
+      redeemScript,
+      transactionBuilder.hashTypes.SIGHASH_ALL,
+      amountInSatoshi,
+      transactionBuilder.signatureAlgorithms.SCHNORR,
+    );
+    console.log(utxo, 'utxo');
+    const tx = transactionBuilder.build();
+    const hex = tx.toHex();
+    // sendRawTransaction to running BCH node
+    bitbox.RawTransactions.sendRawTransaction(hex).then(
+      result => {
+        return result;
+      },
+      err => {
+        throw new Error(err);
+      },
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const transferBtc = async (receiver, amount, sender, privateKey) => {
   const url = 'https://blockchain.info/unspent?active=';
   const amountInSatoshi = bitbox.BitcoinCash.toSatoshi(amount);

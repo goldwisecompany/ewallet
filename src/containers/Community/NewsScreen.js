@@ -15,10 +15,11 @@ const NewsScreen = ({navigation}) => {
     Api.getTopNews()
       .then(articlesData => {
         setArticles(articlesData);
-        setRefreshing(false);
       })
       .catch(error => {
         console.log(error);
+      })
+      .finally(() => {
         setRefreshing(false);
       });
   }, [refreshing]);

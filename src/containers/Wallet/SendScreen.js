@@ -1,13 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Alert, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Input, Text} from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
 import {
   transferEth,
   transferTrx,
   transferBtc,
   transferPrn,
+  transferBch,
 } from '../../services/wallet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../styles';
@@ -35,7 +36,8 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
       coin === 'ETH' ||
       coin === 'TRX' ||
       coin === 'BTC' ||
-      coin === 'PRN'
+      coin === 'PRN' ||
+      coin === 'BCH'
     ) {
       Alert.alert(
         'Transfer',
@@ -84,7 +86,12 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           myWallets[current][coin].privateKey,
         );
       } else if (coin === 'BCH') {
-        // TODO:
+        await transferBch(
+          receiver,
+          amount,
+          myWallets[current][coin].address,
+          myWallets[current][coin].phrase, // !! Alert
+        );
       } else if (coin === 'PRN') {
         await transferPrn(
           receiver,
@@ -136,6 +143,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
               {label: 'ETH', value: 'ETH'},
               {label: 'TRX', value: 'TRX'},
             ]}
+            useNativeAndroidPickerStyle={false}
             Icon={() => {
               return <Ionicons name="md-arrow-down" size={20} color="gray" />;
             }}
