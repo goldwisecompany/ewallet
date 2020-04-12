@@ -333,7 +333,6 @@ export const transferEth = async (receiver, amount, sender, privateKey) => {
   }
 };
 
-// TODO: recovery phrase
 export const transferBch = async (receiver, amount, sender, mnemonic) => {
   const transactionBuilder = new bitbox.TransactionBuilder('mainnet');
   try {
