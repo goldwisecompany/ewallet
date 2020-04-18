@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Alert, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, Input} from 'react-native-elements';
+import {Icon, Button, Input, Text} from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
 import {
   transferEth,
@@ -23,6 +23,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
     (route.params && route.params.coin) || 'PRN',
   );
   const [pin, setPin] = useState('');
+  const [pending, setPending] = useState(false);
 
   const onCheckTransaction = () => {
     if (receiver === '' || amount === '') {
@@ -63,6 +64,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
   };
 
   const transfer = async () => {
+    setPending(true);
     try {
       if (coin === 'ETH') {
         await transferEth(
@@ -104,85 +106,98 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
     } catch (error) {
       Alert.alert('Transaction error', error.message);
     }
+    setPending(false);
   };
 
   return (
     <View style={styles.container}>
-      <Input
-        value={receiver}
-        containerStyle={{margin: 20, width: '85%'}}
-        inputStyle={{marginLeft: 10}}
-        placeholder="Receiver"
-        leftIcon={{type: 'ionicon', name: 'ios-person'}}
-        leftIconContainerStyle={{width: 40, marginLeft: 0}}
-        rightIcon={{
-          type: 'ionicon',
-          name: 'ios-qr-scanner',
-          onPress: () => navigation.navigate('Scanner'),
-        }}
-        onChangeText={setReceiver}
-      />
-      <View style={{flexDirection: 'row', width: '85%'}}>
-        <View
-          style={{
-            flex: 1,
-            borderWidth: 1,
-            borderColor: colors.mainDark,
-            borderRadius: 5,
-            marginLeft: 10,
-          }}>
-          <RNPickerSelect
-            onValueChange={value => setCoin(value)}
-            style={pickerSelectStyles}
-            placeholder={{}}
-            value={coin}
-            items={[
-              {label: 'PRN', value: 'PRN'},
-              {label: 'BTC', value: 'BTC'},
-              {label: 'BCH', value: 'BCH'},
-              {label: 'ETH', value: 'ETH'},
-              {label: 'TRX', value: 'TRX'},
-            ]}
-            useNativeAndroidPickerStyle={false}
-            Icon={() => {
-              return <Ionicons name="md-arrow-down" size={20} color="gray" />;
-            }}
-          />
-        </View>
-        <View style={{flex: 2}}>
-          <Input
-            // containerStyle={{margin: 10}}
-            inputStyle={{marginLeft: 10}}
-            placeholder="Amount"
-            onChangeText={text => setAmount(text)}
-          />
-        </View>
+      <View style={styles.pendingContainer}>
+        {pending && (
+          <View style={styles.pendingMessage}>
+            <Icon name="info-outline" size={20} color="gray" />
+            <Text style={{color: 'gray', paddingLeft: 5}}>
+              A transaction is Pending.
+            </Text>
+          </View>
+        )}
       </View>
-      <Input
-        containerStyle={{margin: 20, width: '85%'}}
-        inputStyle={{marginLeft: 10}}
-        placeholder="Note"
-        // leftIcon={{type: 'ionicon', name: 'md-list-box'}}
-        leftIconContainerStyle={{width: 40, marginLeft: 0}}
-        onChangeText={text => setNote(text)}
-      />
-      <Input
-        containerStyle={{margin: 20, width: '85%'}}
-        inputStyle={{marginLeft: 10}}
-        placeholder="Pin Code"
-        // leftIcon={{type: 'ionicon', name: 'md-lock'}}
-        leftIconContainerStyle={{width: 40, marginLeft: 0}}
-        onChangeText={code => setPin(code)}
-        maxLength={4}
-      />
-      <Button
-        title="Send"
-        buttonStyle={{
-          paddingHorizontal: 100,
-          backgroundColor: colors.mainLight,
-        }}
-        onPress={onCheckTransaction}
-      />
+      <View style={styles.mainContainer}>
+        <Input
+          value={receiver}
+          containerStyle={{margin: 20, width: '85%'}}
+          inputStyle={{marginLeft: 10}}
+          placeholder="Receiver"
+          leftIcon={{type: 'ionicon', name: 'ios-person'}}
+          leftIconContainerStyle={{width: 40, marginLeft: 0}}
+          rightIcon={{
+            type: 'ionicon',
+            name: 'ios-qr-scanner',
+            onPress: () => navigation.navigate('Scanner'),
+          }}
+          onChangeText={setReceiver}
+        />
+        <View style={{flexDirection: 'row', width: '85%'}}>
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: colors.mainDark,
+              borderRadius: 5,
+              marginLeft: 10,
+            }}>
+            <RNPickerSelect
+              onValueChange={value => setCoin(value)}
+              style={pickerSelectStyles}
+              placeholder={{}}
+              value={coin}
+              items={[
+                {label: 'PRN', value: 'PRN'},
+                {label: 'BTC', value: 'BTC'},
+                {label: 'BCH', value: 'BCH'},
+                {label: 'ETH', value: 'ETH'},
+                {label: 'TRX', value: 'TRX'},
+              ]}
+              useNativeAndroidPickerStyle={false}
+              Icon={() => {
+                return <Ionicons name="md-arrow-down" size={20} color="gray" />;
+              }}
+            />
+          </View>
+          <View style={{flex: 2}}>
+            <Input
+              // containerStyle={{margin: 10}}
+              inputStyle={{marginLeft: 10}}
+              placeholder="Amount"
+              onChangeText={text => setAmount(text)}
+            />
+          </View>
+        </View>
+        <Input
+          containerStyle={{margin: 20, width: '85%'}}
+          inputStyle={{marginLeft: 10}}
+          placeholder="Note"
+          // leftIcon={{type: 'ionicon', name: 'md-list-box'}}
+          leftIconContainerStyle={{width: 40, marginLeft: 0}}
+          onChangeText={text => setNote(text)}
+        />
+        <Input
+          containerStyle={{margin: 20, width: '85%'}}
+          inputStyle={{marginLeft: 10}}
+          placeholder="Pin Code"
+          // leftIcon={{type: 'ionicon', name: 'md-lock'}}
+          leftIconContainerStyle={{width: 40, marginLeft: 0}}
+          onChangeText={code => setPin(code)}
+          maxLength={4}
+        />
+        <Button
+          title="Send"
+          buttonStyle={{
+            paddingHorizontal: 100,
+            backgroundColor: colors.mainLight,
+          }}
+          onPress={onCheckTransaction}
+        />
+      </View>
     </View>
   );
 };
@@ -191,8 +206,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  pendingContainer: {
+    height: 200,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pendingMessage: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'gray',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
   },
 });
 

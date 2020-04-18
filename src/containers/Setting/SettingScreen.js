@@ -32,16 +32,18 @@ const SettingScreen = ({navigation, currency}) => {
       name: 'Terms of Service',
       icon: 'description',
       chevron: true,
+      onPress: () => navigation.navigate('TermsofService'),
     },
     {
       name: 'Privacy Policy',
       icon: 'security',
       chevron: true,
+      onPress: () => navigation.navigate('PrivacyPolicy'),
     },
     {
       name: 'Version',
       icon: 'class',
-      rightTitle: '0.0.0',
+      rightTitle: '1.0.0',
       chevron: false,
     },
   ];

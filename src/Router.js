@@ -27,6 +27,8 @@ import WalletManagementScreen from './containers/Setting/WalletManagementScreen'
 import CurrencyScreen from './containers/Setting/CurrencyScreen';
 import RecoveryPhraseScreen from './containers/Setting/RecoveryPhraseScreen';
 import PinCodeScreen from './containers/Setting/PinCodeScreen';
+import TermsofServiceScreen from './containers/Setting/TermsofServiceScreen';
+import PrivacyPolicyScreen from './containers/Setting/PrivacyPolicyScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, fonts} from './styles';
@@ -106,6 +108,16 @@ const SettingStack = () => (
       name="PinCode"
       component={PinCodeScreen}
       options={setStackOptions('Input PinCode')}
+    />
+    <Stack.Screen
+      name="TermsofService"
+      component={TermsofServiceScreen}
+      options={setStackOptions('Terms of Service')}
+    />
+    <Stack.Screen
+      name="PrivacyPolicy"
+      component={PrivacyPolicyScreen}
+      options={setStackOptions('Privacy Policy')}
     />
   </Stack.Navigator>
 );

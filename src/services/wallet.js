@@ -337,9 +337,7 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
   const transactionBuilder = new bitbox.TransactionBuilder('mainnet');
   try {
     // Utxo
-    const utxo = await bitbox.Address.utxo(
-      '1M1FYu4zuVaxRPWLZG5CnP8qQrZaqu6c2L',
-    );
+    const utxo = await bitbox.Address.utxo(sender);
     let balance = 0;
     utxo.utxos.every((item, index) => {
       balance += item.satoshis;
