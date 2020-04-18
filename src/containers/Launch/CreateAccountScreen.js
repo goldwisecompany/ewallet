@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, Platform, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Button, Input} from 'react-native-elements';
@@ -30,7 +30,9 @@ const CreateAccountScreen = ({
   const input = React.createRef();
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <View style={{width: 300, margin: 50}}>
         <Input
           ref={input}
@@ -66,7 +68,7 @@ const CreateAccountScreen = ({
           )
         }
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

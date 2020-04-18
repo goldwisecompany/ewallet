@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Alert, View, StyleSheet} from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  View,
+  StyleSheet,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Input, Text} from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
@@ -110,7 +116,9 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.pendingContainer}>
         {pending && (
           <View style={styles.pendingMessage}>
@@ -198,7 +206,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           onPress={onCheckTransaction}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

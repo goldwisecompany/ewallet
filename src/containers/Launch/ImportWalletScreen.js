@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Alert, View, StyleSheet} from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  View,
+  StyleSheet,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Button, Input} from 'react-native-elements';
 import {validateMnemonic} from '../../services/wallet';
@@ -18,7 +24,9 @@ const ImportWalletScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
       <View style={styles.inputWrapper}>
         <Input
           containerStyle={styles.input}
@@ -26,7 +34,7 @@ const ImportWalletScreen = ({navigation}) => {
           onChangeText={text => setRecoveryPhrase(text)}
           inputContainerStyle={{borderBottomWidth: 0, flex: 1}}
           multiline
-          returnKeyType="go"
+          returnKeyType="done"
           autoFocus
         />
       </View>
@@ -37,7 +45,7 @@ const ImportWalletScreen = ({navigation}) => {
           onPress={onPressNext}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
