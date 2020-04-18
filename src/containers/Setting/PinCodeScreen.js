@@ -1,29 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
-  Clipboard,
   View,
-  Share,
   StyleSheet,
-  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Icon, Input, Text} from 'react-native-elements';
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import {Button, Input} from 'react-native-elements';
 import {StackActions} from '@react-navigation/native';
 import {colors} from '../../styles';
 
 const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
   const [code, setCode] = useState();
-  const pinInput = React.createRef();
-
-  useEffect(() => {
-    pinInput.current.focus();
-  }, []);
+  const input = React.createRef();
 
   const checkPin = pin => {
     if (pin !== pinCode) {
-      pinInput.current.shake().then(() => setCode(''));
+      Alert.alert('Error', 'Incorrect pin code');
     } else {
       navigation.dispatch(
         StackActions.replace('RecoveryPhrase', {
@@ -34,9 +28,26 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.input}>
-        <SmoothPinCodeInput
+        <Input
+          ref={input}
+          containerStyle={{width: '90%'}}
+          inputStyle={{marginLeft: 10}}
+          leftIcon={{type: 'ionicon', name: 'ios-lock'}}
+          leftIconContainerStyle={{width: 40, marginLeft: 0}}
+          onChangeText={text => setCode(text)}
+          placeholder="Check pin code"
+        />
+        <View style={{height: 100}} />
+        <Button
+          title="Check"
+          buttonStyle={styles.buttonStyle}
+          onPress={() => checkPin(code)}
+        />
+        {/** <SmoothPinCodeInput
           ref={pinInput}
           autoFocus={true}
           value={code}
@@ -46,9 +57,9 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
           onBackspace={() => console.log('No more back.')}
           password
           mask={<View style={styles.mask} />}
-        />
+        /> */}
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -56,15 +67,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center',
   },
   input: {
     marginTop: 100,
+    alignItems: 'center',
   },
-  mask: {
-    width: 10,
-    height: 10,
-    borderRadius: 25,
+  buttonStyle: {
+    paddingVertical: 15,
+    paddingHorizontal: 100,
     backgroundColor: colors.mainLight,
   },
 });

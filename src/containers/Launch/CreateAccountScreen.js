@@ -14,7 +14,6 @@ const CreateAccountScreen = ({
 }) => {
   const [nickname, setNickname] = useState('');
   const [inputPinCode, setInputPinCode] = useState('');
-  const reg = /^[0-9]+$/;
 
   const onPressLoading = () => {
     updateDataConnect({
@@ -47,12 +46,11 @@ const CreateAccountScreen = ({
           <Input
             containerStyle={{margin: 10}}
             inputStyle={{marginLeft: 10}}
-            placeholder="Pincode (4 digits)"
+            placeholder="Pincode (6 ~ 14 characters)"
             leftIcon={{type: 'ionicon', name: 'ios-lock'}}
             leftIconContainerStyle={{width: 40, marginLeft: 0}}
             onChangeText={pin => setInputPinCode(pin)}
-            keyboardType="number-pad"
-            maxLength={4}
+            maxLength={14}
           />
         )}
       </View>
@@ -64,7 +62,7 @@ const CreateAccountScreen = ({
           !(
             nickname !== '' &&
             (isSetupPinCode ||
-              (inputPinCode.length === 4 && reg.test(inputPinCode)))
+              (inputPinCode.length >= 6 && inputPinCode.length <= 14))
           )
         }
       />

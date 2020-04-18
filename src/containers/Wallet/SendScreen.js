@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {Alert, ScrollView, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Input, Text} from 'react-native-elements';
 import RNPickerSelect from 'react-native-picker-select';
@@ -116,9 +110,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <ScrollView style={styles.container}>
       <View style={styles.pendingContainer}>
         {pending && (
           <View style={styles.pendingMessage}>
@@ -206,7 +198,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           onPress={onCheckTransaction}
         />
       </View>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -216,13 +208,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   mainContainer: {
-    flex: 1,
+    height: 700,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
   pendingContainer: {
-    height: 200,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
