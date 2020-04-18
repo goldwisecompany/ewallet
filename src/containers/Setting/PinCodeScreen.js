@@ -40,6 +40,7 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={text => setCode(text)}
           placeholder="Check pin code"
+          autoFocus
         />
         <View style={{height: 100}} />
         <Button
