@@ -10,6 +10,7 @@ const BTC = require('../../assets/BTC.png');
 const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
 const PRN = require('../../assets/PRN.png');
+const USDT = require('../../assets/USDT.png');
 
 const TransactionHistoryScreen = ({
   navigation,
@@ -48,6 +49,7 @@ const TransactionHistoryScreen = ({
       ETH: ETH,
       TRX: TRX,
       PRN: PRN,
+      USDT: USDT,
     };
     return imageList[theCoin];
   };
@@ -184,6 +186,7 @@ const TransactionHistoryScreen = ({
             }
           }
         } else if (route.params.coin === 'PRN') {
+          // TODO: Migration to mainnet
           const address = myWallets[current].PRN.address;
           const res = await fetch(
             `http://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
@@ -193,6 +196,29 @@ const TransactionHistoryScreen = ({
           if (result.length > 0) {
             const newList = result
               .filter(item => item.tokenName === 'prnc')
+              .map(tx => ({
+                ...tx,
+                status:
+                  tx.from.toLowerCase() === address.toLowerCase()
+                    ? 'Send'
+                    : 'Receive',
+                date: new Date(tx.timeStamp * 1000).toLocaleString(),
+                value: bitbox.BitcoinCash.toBitcoinCash(
+                  Number(tx.value),
+                ).toFixed(4),
+              }));
+            setTransactionList(newList);
+          }
+        } else if (route.params.coin === 'USDT') {
+          const address = myWallets[current].USDT.address;
+          const res = await fetch(
+            `http://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+          );
+          const data = await res.json();
+          const {result} = data;
+          if (result.length > 0) {
+            const newList = result
+              .filter(item => item.tokenName === 'Tether USD')
               .map(tx => ({
                 ...tx,
                 status:

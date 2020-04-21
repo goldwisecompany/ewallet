@@ -23,11 +23,12 @@ const LoadingScreen = ({navigation, wallet, createWalletConnect, route}) => {
       const BTC = await generateCoinWallet(phrase, '0');
       const ETH = await generateCoinWallet(phrase, '60');
       const PRN = await generateCoinWallet(phrase, '60');
+      const USDT = await generateCoinWallet(phrase, '60');
       const BCH = await generateCoinWallet(phrase, '145');
       const TRX = await generateCoinWallet(phrase, '195');
       setText('Creating Wallet ...');
       createWalletConnect({
-        myWallets: {BTC, BCH, ETH, PRN, TRX},
+        myWallets: {BTC, BCH, ETH, PRN, TRX, USDT},
         phrase,
       });
       await delay(1000);

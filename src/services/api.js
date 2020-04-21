@@ -23,6 +23,10 @@ const trxRequest = fetch('https://api.coinlore.net/api/ticker/?id=2713').then(
   res => res.json(),
 );
 
+const usdtRequest = fetch('https://api.coinlore.net/api/ticker/?id=518').then(
+  res => res.json(),
+);
+
 export const getPrice = async () => {
   try {
     const allPrice = await Promise.all([
@@ -30,6 +34,7 @@ export const getPrice = async () => {
       bchRequest,
       ethRequest,
       trxRequest,
+      usdtRequest,
     ]);
     return allPrice;
   } catch (error) {

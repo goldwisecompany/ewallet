@@ -27,3 +27,8 @@ export const changeCurrency = payload => ({
 export const recreateWallet = () => ({
   type: 'RECREATE_WALLET',
 });
+
+export const updateBlogs = payload => ({
+  type: 'UPDATE_BLOGS',
+  payload,
+});

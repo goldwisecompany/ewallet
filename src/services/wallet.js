@@ -14,7 +14,7 @@ export const bnToHex = bigNumber => bigInt(bigNumber).toString(16);
 export const bitbox = new BITBOX();
 // ETH
 export const web3 = new Web3(
-  'https://ropsten.infura.io/v3/ad44aa85b3ea4cb6b207760c9e5b37ee',
+  'https://mainnet.infura.io/v3/ad44aa85b3ea4cb6b207760c9e5b37ee',
 );
 
 export const erc20Abi = [
@@ -444,6 +444,28 @@ export const transferPrn = async (receiver, amount, sender, privateKey) => {
     const receipt = await web3.eth.sendTransaction({
       from: sender,
       to: '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a',
+      value: '0',
+      gas: 90000,
+      data: txData,
+    });
+    return receipt;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const transferUsdt = async (receiver, amount, sender, privateKey) => {
+  const inputData0 = receiver.substring(2).padStart(64, '0');
+  const inputData1 = bnToHex(bitbox.BitcoinCash.toSatoshi(amount)).padStart(
+    64,
+    '0',
+  );
+  const txData = `0xa9059cbb${inputData0}${inputData1}`.toLowerCase();
+
+  try {
+    const receipt = await web3.eth.sendTransaction({
+      from: sender,
+      to: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       value: '0',
       gas: 90000,
       data: txData,

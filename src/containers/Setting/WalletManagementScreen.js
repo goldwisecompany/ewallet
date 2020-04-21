@@ -27,19 +27,11 @@ const WalletManagementScreen = ({
         <Text style={{fontSize: 20}}>{walletName[index]}</Text>
         <CheckBox
           center
-          containerStyle={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            margin: 0,
-            padding: 0,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-          }}
+          containerStyle={styles.checkBox}
           checkedIcon="dot-circle-o"
           uncheckedIcon="circle-o"
           checked={index === current}
           onPress={() => {
-            console.log(item);
             changeWalletConnect({index});
             Alert.alert('', 'Wallet Changed!');
           }}
@@ -66,7 +58,10 @@ const WalletManagementScreen = ({
           backgroundColor: colors.mainLight,
         }}
         type="solid"
-        onPress={() => navigation.navigate('PinCode')}
+        onPress={() => {
+          Alert.alert('', index.toString());
+          navigation.navigate('PinCode', {currentIndex: index});
+        }}
       />
       <View style={{height: 20}} />
     </View>
@@ -129,6 +124,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 20,
     borderColor: colors.mainDark,
+  },
+  checkBox: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    margin: 0,
+    padding: 0,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 });
 

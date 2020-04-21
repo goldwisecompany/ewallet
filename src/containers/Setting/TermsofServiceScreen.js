@@ -56,9 +56,9 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
         </Text>
         <Text>
           Users shall bear sole responsibility to take care of their own mobile
-          devices and back up the PIN code and Recovery Phrase somewhere safe in
+          devices and back up the Password and Recovery Phrase somewhere safe in
           addition to the Service itself. The Company will not be able to
-          recover the wallet or trace back your PIN code or Recovery Phrase for
+          recover the wallet or trace back your Password or Recovery Phrase for
           you if your mobile device is lost. Due to the irreversible nature of
           crypto currency protocols, transactions can neither be cancelled nor
           reversed once they have been sent. When you use the Service to
@@ -148,7 +148,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           not be responsible or liable for any error or omissions in that
           information. Due to the decentralized feature of blockchain and the
           safety of Users’ crypto assets, the Company do not have any
-          responsibility to store or backup Users’ PIN code or Recovery Phrase.
+          responsibility to store or backup Users’ Password or Recovery Phrase.
         </Text>
       </View>
     </ScrollView>

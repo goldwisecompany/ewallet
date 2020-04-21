@@ -32,7 +32,7 @@ const CreateAccountScreen = ({
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
-      <View style={{width: 300, margin: 50}}>
+      <View style={{width: 350, margin: 50}}>
         <Input
           ref={input}
           containerStyle={{margin: 10}}
@@ -46,7 +46,7 @@ const CreateAccountScreen = ({
           <Input
             containerStyle={{margin: 10}}
             inputStyle={{marginLeft: 10}}
-            placeholder="Pincode (6 ~ 14 characters)"
+            placeholder="Password (6 ~ 14 characters)"
             leftIcon={{type: 'ionicon', name: 'ios-lock'}}
             leftIconContainerStyle={{width: 40, marginLeft: 0}}
             onChangeText={pin => setInputPinCode(pin)}

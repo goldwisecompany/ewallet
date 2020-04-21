@@ -24,6 +24,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
   );
   const [pin, setPin] = useState('');
   const [pending, setPending] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const onCheckTransaction = () => {
     if (receiver === '' || amount === '') {
@@ -56,6 +57,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
   };
 
   const pendingMessage = () => {
+    setDisabled(true);
     Alert.alert(
       'Transaction Pending',
       'The transaction has been broadcast. Please wait for a while.',
@@ -65,6 +67,10 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
 
   const transfer = async () => {
     setPending(true);
+    const timer = setTimeout(() => {
+      setDisabled(false);
+      clearTimeout(timer);
+    }, 5000);
     try {
       if (coin === 'ETH') {
         await transferEth(
@@ -95,6 +101,13 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           myWallets[current][coin].phrase, // !! Alert
         );
       } else if (coin === 'PRN') {
+        await transferPrn(
+          receiver,
+          amount,
+          myWallets[current][coin].address,
+          myWallets[current][coin].privateKey,
+        );
+      } else if (coin === 'USDT') {
         await transferPrn(
           receiver,
           amount,
@@ -156,6 +169,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
                 {label: 'BCH', value: 'BCH'},
                 {label: 'ETH', value: 'ETH'},
                 {label: 'TRX', value: 'TRX'},
+                {label: 'USDT', value: 'USDT'},
               ]}
               useNativeAndroidPickerStyle={false}
               Icon={() => {
@@ -183,11 +197,11 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
         <Input
           containerStyle={{margin: 20, width: '85%'}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Pin Code"
+          placeholder="Password"
           // leftIcon={{type: 'ionicon', name: 'md-lock'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={code => setPin(code)}
-          maxLength={4}
+          maxLength={14}
         />
         <Button
           title="Send"
@@ -196,6 +210,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
             backgroundColor: colors.mainLight,
           }}
           onPress={onCheckTransaction}
+          disabled={disabled}
         />
       </View>
     </ScrollView>

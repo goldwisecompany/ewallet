@@ -43,6 +43,7 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
             {label: 'BCH', value: 'BCH'},
             {label: 'ETH', value: 'ETH'},
             {label: 'TRX', value: 'TRX'},
+            {label: 'USDT', value: 'USDT'},
           ]}
           useNativeAndroidPickerStyle={false}
           Icon={() => {

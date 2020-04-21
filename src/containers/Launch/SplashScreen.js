@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import {Image, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
+import {updateBlogs} from '../../actions/index';
 
 const PRN = require('../../assets/PRN.png');
 
-const SplashScreen = ({navigation, isGenerating}) => {
+const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.reset({
@@ -14,6 +15,19 @@ const SplashScreen = ({navigation, isGenerating}) => {
       });
     }, 3000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchBlogArticles = async () => {
+      try {
+        const res = await fetch('http://pranceworld.site/api/blogs');
+        const data = await res.json();
+        updateBlogsConnect(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchBlogArticles();
   }, []);
 
   return (
@@ -40,7 +54,9 @@ const mapStateToProps = state => ({
   isGenerating: state.wallet.isGenerating,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateBlogsConnect: updateBlogs,
+};
 
 export default connect(
   mapStateToProps,

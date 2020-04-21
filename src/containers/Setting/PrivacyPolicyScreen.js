@@ -32,9 +32,9 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
           information may include, but is not limited to: Transaction records
           and wallet accounts(addresses) Operation records Cookies and Usage
           Data Mobile device information You confirm that your Wallet Private
-          Keys, Recovery Phrases and Pin Code are not stored on PRN wallet’s
+          Keys, Recovery Phrases and Password are not stored on PRN wallet’s
           servers. PRN wallet Inc. does not provide the service to restore your
-          Wallet Private Keys, Recovery Phrases, Pin Code. Usage Data We may
+          Wallet Private Keys, Recovery Phrases, Password. Usage Data We may
           also collect information that your browser sends whenever you visit
           our Service or when you access the Service by or through a mobile
           device ("Usage Data"). This Usage Data may include information such as

@@ -11,17 +11,18 @@ import {Button, Input} from 'react-native-elements';
 import {StackActions} from '@react-navigation/native';
 import {colors} from '../../styles';
 
-const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
+const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
   const [code, setCode] = useState();
   const input = React.createRef();
 
   const checkPin = pin => {
     if (pin !== pinCode) {
-      Alert.alert('Error', 'Incorrect pin code');
+      Alert.alert('Error', 'Incorrect password');
     } else {
       navigation.dispatch(
         StackActions.replace('RecoveryPhrase', {
-          phrase: phrase[current],
+          phrase:
+            phrase[(route.params && route.params.currentIndex) || current],
         }),
       );
     }
@@ -39,7 +40,7 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode}) => {
           leftIcon={{type: 'ionicon', name: 'ios-lock'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={text => setCode(text)}
-          placeholder="Check pin code"
+          placeholder="Check Password"
           autoFocus
         />
         <View style={{height: 100}} />

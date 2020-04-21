@@ -6,6 +6,7 @@ const walletInitialState = {
   currency: 'USD',
   pinCode: '',
   isGenerating: true,
+  blogs: [],
 };
 
 const wallet = (state = walletInitialState, action) => {
@@ -41,6 +42,11 @@ const wallet = (state = walletInitialState, action) => {
       return {
         ...state,
         isGenerating: true,
+      };
+    case 'UPDATE_BLOGS':
+      return {
+        ...state,
+        blogs: action.payload,
       };
     default:
       return state;

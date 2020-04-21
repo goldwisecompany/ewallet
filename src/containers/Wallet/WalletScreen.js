@@ -8,25 +8,36 @@ import {
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Button, ListItem, Text} from 'react-native-elements';
+import {Button, ListItem, Text, Icon} from 'react-native-elements';
 import Swiper from 'react-native-swiper';
 import {web3, tronWeb, erc20Abi, bitbox} from '../../services/wallet';
 import {colors, fonts} from '../../styles';
 import {getPrice} from '../../services/api';
+import {updateBlogs} from '../../actions/index';
 
 const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
 const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
 const PRN = require('../../assets/PRN.png');
+const USDT = require('../../assets/USDT.png');
 
-const WalletScreen = ({navigation, myWallets, current, currency}) => {
+const WalletScreen = ({
+  navigation,
+  myWallets,
+  current,
+  currency,
+  walletName,
+  blogs,
+  updateBlogsConnect,
+}) => {
   const [balances, setBalances] = useState({
     PRN: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
     TRX: '0',
+    USDT: '0',
   });
 
   const [priceList, setPriceList] = useState({
@@ -35,6 +46,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
     BCH: '0',
     ETH: '0',
     TRX: '0',
+    USDT: '0',
   });
 
   const [ratesList, setRatesList] = useState({
@@ -61,6 +73,20 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
     });
     return unsubscribe;
   }, [refreshing, navigation]);
+
+  useEffect(() => {
+    const fetchBlogArticles = async () => {
+      try {
+        const res = await fetch('http://pranceworld.site/api/blogs');
+        const data = await res.json();
+        updateBlogsConnect(data);
+      } catch (error) {
+        console.log(error);
+        updateBlogsConnect([]);
+      }
+    };
+    fetchBlogArticles();
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -93,6 +119,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
       ETH: ETH,
       TRX: TRX,
       PRN: PRN,
+      USDT: USDT,
     };
     return imageList[theCoin];
   };
@@ -123,12 +150,23 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         btcSatoshiBalance = 0;
       }
 
-      const tokenContract = new web3.eth.Contract(
+      // TODO: Migrate to mainnet
+      const prnTokenContract = new web3.eth.Contract(
         erc20Abi,
-        '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a',
+        '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a', // Ropsten
       );
       const prnbalance =
-        (await tokenContract.methods
+        (await prnTokenContract.methods
+          .balanceOf(myWallets[current].ETH.address)
+          .call()) || 0;
+
+      const usdtTokenContract = new web3.eth.Contract(
+        erc20Abi,
+        // '0x748805809ee80adf15ecf3ad80feb0c99bc27b4b', // Ropsten
+        '0xdAC17F958D2ee523a2206206994597C13D831ec7', // Main
+      );
+      const usdtbalance =
+        (await usdtTokenContract.methods
           .balanceOf(myWallets[current].ETH.address)
           .call()) || 0;
 
@@ -141,6 +179,9 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
       const prnBalance = bitbox.BitcoinCash.toBitcoinCash(
         prnbalance,
       ).toString();
+
+      const usdtBalance = web3.utils.fromWei(usdtbalance || '0', 'Mwei');
+
       setBalances({
         ...balances,
         BCH: bchBalance,
@@ -148,6 +189,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         ETH: ethBalance,
         TRX: trxBalance,
         PRN: prnBalance,
+        USDT: usdtBalance,
       });
       let priceData = [];
       try {
@@ -162,6 +204,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
           BCH: Number(priceData[1][0].price_usd) * Number(bchBalance),
           ETH: Number(priceData[2][0].price_usd) * Number(ethBalance),
           TRX: Number(priceData[3][0].price_usd) * Number(trxBalance),
+          USDT: Number(priceData[4][0].price_usd) * Number(usdtBalance),
         });
         setTotalPrice(
           (
@@ -169,7 +212,8 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
             Number(priceData[0][0].price_usd) * Number(btcBalance) +
             Number(priceData[1][0].price_usd) * Number(bchBalance) +
             Number(priceData[2][0].price_usd) * Number(ethBalance) +
-            Number(priceData[3][0].price_usd) * Number(trxBalance)
+            Number(priceData[3][0].price_usd) * Number(trxBalance) +
+            Number(priceData[4][0].price_usd) * Number(usdtBalance)
           ).toFixed(2),
         );
       }
@@ -182,7 +226,6 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         Object.keys(rates).forEach(key => {
           newRates[key.substring(3, 6)] = rates[key].rate;
         });
-        console.log('thanks');
         setRatesList(newRates);
       } catch (error) {
         console.log(error);
@@ -218,25 +261,29 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
     />
   );
 
+  console.log(blogs);
+
   return (
     <View style={styles.container}>
       {/* TODO: Banner */}
       <View style={styles.banner}>
-        <Swiper
-          autoplay={true}
-          autoplayTimeout={5}
-          dotColor={colors.mainDark}
-          activeDotColor={colors.mainLight}>
-          <View style={styles.slide}>
-            <Text style={styles.text}>1</Text>
-          </View>
-          <View style={styles.slide}>
-            <Text style={styles.text}>2</Text>
-          </View>
-          <View style={styles.slide}>
-            <Text style={styles.text}>3</Text>
-          </View>
-        </Swiper>
+        {blogs && blogs.length !== 0 && (
+          <Swiper
+            autoplay={true}
+            autoplayTimeout={5}
+            dotColor={colors.mainDark}
+            activeDotColor={colors.mainLight}>
+            {blogs.map(item => (
+              <View style={styles.slide} key={item.id}>
+                <Image
+                  style={styles.image}
+                  source={{uri: item.originalImageUrl || item.image}}
+                />
+                <Text style={styles.text}>1</Text>
+              </View>
+            ))}
+          </Swiper>
+        )}
       </View>
       <View style={styles.buttonWrapper}>
         {buttonList.map(item => (
@@ -252,9 +299,35 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
         ))}
       </View>
       <View style={styles.titleWrapper}>
-        <Text style={styles.title}>
-          {`${toLocaleCurrency(totalPrice)} ${currency}`}
-        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginLeft: 20,
+          }}>
+          <Icon
+            type="material-community"
+            name="wallet"
+            size={20}
+            iconStyle={{marginTop: 5}}
+          />
+          <View style={{width: 20}} />
+          <Text style={styles.subtitle}>{walletName[current]}</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            marginRight: 15,
+          }}>
+          <Text style={styles.subtitle}>
+            {`${toLocaleCurrency(totalPrice)} ${currency}`}
+          </Text>
+        </View>
       </View>
       <View style={styles.list}>
         <FlatList
@@ -262,7 +335,7 @@ const WalletScreen = ({navigation, myWallets, current, currency}) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={keyExtractor}
-          data={['PRN', 'BTC', 'BCH', 'ETH', 'TRX']}
+          data={['PRN', 'BTC', 'BCH', 'ETH', 'TRX', 'USDT']}
           renderItem={renderItem}
           scrollEnabled={true}
         />
@@ -294,12 +367,17 @@ const styles = StyleSheet.create({
   titleWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    height: 60,
   },
   titleStyle: {
     color: colors.mainLight,
   },
   title: {
     fontSize: 30,
+  },
+  subtitle: {
+    fontSize: 24,
   },
   list: {
     flex: 1,
@@ -316,7 +394,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.mainLightTrans,
   },
   text: {
     color: '#fff',
@@ -331,15 +408,23 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
 });
 
 const mapStateToProps = state => ({
   myWallets: state.wallet.myWallets,
   current: state.wallet.current,
   currency: state.wallet.currency,
+  walletName: state.wallet.walletName,
+  blogs: state.wallet.blogs,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateBlogsConnect: updateBlogs,
+};
 
 export default connect(
   mapStateToProps,
