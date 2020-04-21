@@ -59,7 +59,6 @@ const WalletManagementScreen = ({
         }}
         type="solid"
         onPress={() => {
-          Alert.alert('', index.toString());
           navigation.navigate('PinCode', {currentIndex: index});
         }}
       />

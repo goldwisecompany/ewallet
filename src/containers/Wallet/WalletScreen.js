@@ -233,6 +233,14 @@ const WalletScreen = ({
     } catch (error) {
       console.log(error.message, 'error');
     }
+    try {
+      const res = await fetch('http://pranceworld.site/api/blogs');
+      const data = await res.json();
+      updateBlogsConnect(data);
+    } catch (error) {
+      console.log(error);
+      updateBlogsConnect([]);
+    }
     setRefreshing(false);
   };
 

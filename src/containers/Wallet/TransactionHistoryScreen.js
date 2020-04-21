@@ -59,7 +59,7 @@ const TransactionHistoryScreen = ({
       try {
         if (route.params.coin === 'ETH') {
           const response = await fetch(
-            `https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=${
+            `https://api.etherscan.io/api?module=account&action=txlist&address=${
               myWallets[current].ETH.address
             }&startblock=0&endblock=99999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
@@ -189,7 +189,7 @@ const TransactionHistoryScreen = ({
           // TODO: Migration to mainnet
           const address = myWallets[current].PRN.address;
           const res = await fetch(
-            `http://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+            `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
           const data = await res.json();
           const {result} = data;
@@ -212,7 +212,7 @@ const TransactionHistoryScreen = ({
         } else if (route.params.coin === 'USDT') {
           const address = myWallets[current].USDT.address;
           const res = await fetch(
-            `http://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+            `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
           const data = await res.json();
           const {result} = data;
