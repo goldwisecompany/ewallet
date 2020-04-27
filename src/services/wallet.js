@@ -401,6 +401,7 @@ export const transferBtc = async (receiver, amount, sender, privateKey) => {
       txb.addInput(item.tx_hash, item.tx_output_n);
       return amountInSatoshi + 15000 > balance;
     });
+
     // UTXO Output
     txb.addOutput(receiver, amountInSatoshi);
     txb.addOutput(sender, balance - amountInSatoshi - 15000); // Change Address, fee:15000

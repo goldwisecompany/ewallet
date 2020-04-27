@@ -7,6 +7,7 @@ const walletInitialState = {
   pinCode: '',
   isGenerating: true,
   blogs: [],
+  uuid: '',
 };
 
 const wallet = (state = walletInitialState, action) => {
@@ -47,6 +48,14 @@ const wallet = (state = walletInitialState, action) => {
       return {
         ...state,
         blogs: action.payload,
+      };
+    case 'REGISTER_UUID':
+      return {
+        ...state,
+        uuid:
+          state.uuid === '' || state.uuid === undefined
+            ? action.payload
+            : state.uuid,
       };
     default:
       return state;

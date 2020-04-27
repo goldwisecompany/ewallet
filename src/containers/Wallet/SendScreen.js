@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Alert, ScrollView, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Input, Text} from 'react-native-elements';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
 import RNPickerSelect from 'react-native-picker-select';
 import {
   transferEth,
@@ -9,11 +11,19 @@ import {
   transferBtc,
   transferPrn,
   transferBch,
+  transferUsdt,
 } from '../../services/wallet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../styles';
 
-const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
+const SendScreen = ({
+  navigation,
+  route,
+  myWallets,
+  current,
+  pinCode,
+  uuidMobile,
+}) => {
   const [receiver, setReceiver] = useState(
     (route.params && route.params.receiver) || '',
   );
@@ -71,22 +81,25 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
       setDisabled(false);
       clearTimeout(timer);
     }, 5000);
+    let txid = '';
     try {
       if (coin === 'ETH') {
-        await transferEth(
+        const receipt = await transferEth(
           receiver,
           amount,
           myWallets[current][coin].address,
           myWallets[current][coin].privateKey,
         );
+        txid = receipt.transactionHash;
       } else if (coin === 'TRX') {
-        await transferTrx(
+        txid = await transferTrx(
           receiver,
           amount,
           myWallets[current][coin].address,
           myWallets[current][coin].privateKey,
         );
       } else if (coin === 'BTC') {
+        // TODO: txid
         await transferBtc(
           receiver,
           amount,
@@ -94,6 +107,7 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           myWallets[current][coin].privateKey,
         );
       } else if (coin === 'BCH') {
+        // TODO: txid
         await transferBch(
           receiver,
           amount,
@@ -101,24 +115,36 @@ const SendScreen = ({navigation, route, myWallets, current, pinCode}) => {
           myWallets[current][coin].phrase, // !! Alert
         );
       } else if (coin === 'PRN') {
-        await transferPrn(
+        const receipt = await transferPrn(
           receiver,
           amount,
           myWallets[current][coin].address,
           myWallets[current][coin].privateKey,
         );
+        txid = receipt.transactionHash;
       } else if (coin === 'USDT') {
-        await transferPrn(
+        const receipt = await transferUsdt(
           receiver,
           amount,
           myWallets[current][coin].address,
           myWallets[current][coin].privateKey,
         );
+        txid = receipt.transactionHash;
       }
       Alert.alert('Transaction Success', 'The transaction has been Confirmed.');
     } catch (error) {
       Alert.alert('Transaction error', error.message);
     }
+
+    firestore()
+      .collection('user')
+      .doc('txdata')
+      .update({
+        [`tx.${coin}.${txid}`]: note,
+      })
+      .then(() => {
+        console.log('User added!');
+      });
     setPending(false);
   };
 
@@ -273,6 +299,7 @@ const mapStateToProps = state => ({
   myWallets: state.wallet.myWallets,
   current: state.wallet.current,
   pinCode: state.wallet.pinCode,
+  uuidMobile: state.wallet.uuid,
 });
 
 const mapDispatchToProps = {};

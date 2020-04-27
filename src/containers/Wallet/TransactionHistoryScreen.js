@@ -3,6 +3,7 @@ import {FlatList, Image, RefreshControl, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
 import {colors} from '../../styles';
+import firestore from '@react-native-firebase/firestore';
 import {web3, tronWeb, bitbox} from '../../services/wallet';
 
 const BCH = require('../../assets/BCH.png');
@@ -19,6 +20,7 @@ const TransactionHistoryScreen = ({
   phrase,
   current,
   currency,
+  uuidMobile,
 }) => {
   const coin = (route.params && route.params.coin) || 'PRN';
   const [refreshing, setRefreshing] = useState(false);
@@ -56,6 +58,26 @@ const TransactionHistoryScreen = ({
 
   useEffect(() => {
     const fetchTransaction = async () => {
+      let mappingData = {};
+      try {
+        const documentSnapshot = await firestore()
+          .collection('user')
+          .doc('txdata')
+          .get();
+        if (documentSnapshot.exists) {
+          mappingData = documentSnapshot.data();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      // .then(documentSnapshot => {
+      //   console.log('User exists: ', documentSnapshot.exists);
+      //   if (documentSnapshot.exists) {
+      //     console.log('User data: ', documentSnapshot.data());
+      //   }
+      // });
+      const mappingHash =
+        mappingData && mappingData.tx && mappingData.tx[route.params.coin];
       try {
         if (route.params.coin === 'ETH') {
           const response = await fetch(
@@ -74,43 +96,62 @@ const TransactionHistoryScreen = ({
                   item.from === myWallets[current].ETH.address
                     ? 'Send'
                     : 'Receive',
+                note: (mappingHash && mappingHash[item.hash]) || '',
               }))
               .filter((_, index) => index < 30),
           );
           setTransactionList(newList.reverse());
         } else if (route.params.coin === 'BTC') {
           const response = await fetch(
-            `https://blockchain.info/rawaddr/${myWallets[current].BTC.address}`,
+            `https://chain.api.btc.com/v3/address/${
+              myWallets[current].BTC.address
+            }/tx`,
           );
-          const {txs} = await response.json();
-          if (txs.length > 0) {
-            const newTxs = txs
-              .filter((item, index) => index < 10)
-              .map(item => ({
-                ...item,
-                date: new Date(item.time * 1000).toLocaleString(),
-                status:
-                  item.inputs.findIndex(
+          const {data} = await response.json();
+          if (data !== null) {
+            const {list} = data;
+            if (list.length > 0) {
+              const newList = list
+                .filter((item, index) => index < 10)
+                .map(i => {
+                  const findInputIndex = i.inputs.findIndex(
                     inputItem =>
-                      inputItem.prev_out.addr ===
-                      myWallets[current].BTC.address,
-                  ) === -1
-                    ? 'Receive'
-                    : 'Send',
-                from: item.inputs[0].prev_out.addr,
-                to: item.out[0].addr,
-                value: bitbox.BitcoinCash.toBitcoinCash(
-                  item.inputs
-                    .map(i => i.prev_out.value)
-                    .reduce((a, b) => a + b, 0),
-                ),
-              }));
-            console.log(newTxs, 'jojoj');
-            setTransactionList(newTxs);
+                      inputItem.prev_addresses[0] ===
+                      myWallets[current].BCH.address,
+                  );
+
+                  const findOutputIndex = i.outputs.findIndex(
+                    outputItem =>
+                      outputItem.addresses[0] ===
+                      myWallets[current].BCH.address,
+                  );
+
+                  let finalValue = 0;
+
+                  finalValue =
+                    ((i.outputs[findOutputIndex] &&
+                      i.outputs[findOutputIndex].value) ||
+                      0) -
+                    ((i.inputs[findInputIndex] &&
+                      i.inputs[findInputIndex].prev_value) ||
+                      0);
+
+                  return {
+                    ...i,
+                    date: new Date(i.block_time * 1000).toLocaleString(),
+                    value: bitbox.BitcoinCash.toBitcoinCash(finalValue),
+                    status: finalValue > 0 ? 'Receive' : 'Send',
+                    from: i.inputs[0].prev_addresses[0] || 'mining',
+                    to: i.outputs[0].addresses[0],
+                    note: (mappingHash && mappingHash[i.hash]) || '',
+                  };
+                });
+              setTransactionList(newList);
+            }
           }
         } else if (route.params.coin === 'TRX') {
           const res = await fetch(
-            `http://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=30&start=0&address=${
+            `https://apilist.tronscan.org/api/transaction?sort=-timestamp&count=true&limit=30&start=0&address=${
               myWallets[current].TRX.address
             }`,
           );
@@ -130,6 +171,7 @@ const TransactionHistoryScreen = ({
                   item.ownerAddress === myWallets[current].TRX.address
                     ? 'Send'
                     : 'Receive',
+                note: (mappingHash && mappingHash[item.hash]) || '',
               })),
           );
           setTransactionList(txsList);
@@ -137,11 +179,8 @@ const TransactionHistoryScreen = ({
           const legacyAddress = bitbox.Address.toLegacyAddress(
             myWallets[current].BCH.address,
           );
-          console.log(legacyAddress);
           const res = await fetch(
-            `https://bch-chain.api.btc.com/v3/address/${
-              myWallets[current].BCH.address
-            }/tx`,
+            `https://bch-chain.api.btc.com/v3/address/${legacyAddress}/tx`,
           );
           const {data} = await res.json();
           if (data !== null) {
@@ -179,9 +218,9 @@ const TransactionHistoryScreen = ({
                     status: finalValue > 0 ? 'Receive' : 'Send',
                     from: i.inputs[0].prev_addresses[0] || 'mining',
                     to: i.outputs[0].addresses[0],
+                    note: (mappingHash && mappingHash[i.hash]) || '',
                   };
                 });
-              console.log(newList);
               setTransactionList(newList);
             }
           }
@@ -189,13 +228,13 @@ const TransactionHistoryScreen = ({
           // TODO: Migration to mainnet
           const address = myWallets[current].PRN.address;
           const res = await fetch(
-            `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+            `https://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
           const data = await res.json();
           const {result} = data;
           if (result.length > 0) {
             const newList = result
-              .filter(item => item.tokenName === 'prnc')
+              .filter(item => item.tokenName === 'prnc') // TODO: change name
               .map(tx => ({
                 ...tx,
                 status:
@@ -206,13 +245,14 @@ const TransactionHistoryScreen = ({
                 value: bitbox.BitcoinCash.toBitcoinCash(
                   Number(tx.value),
                 ).toFixed(4),
+                note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
             setTransactionList(newList);
           }
         } else if (route.params.coin === 'USDT') {
           const address = myWallets[current].USDT.address;
           const res = await fetch(
-            `http://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+            `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
           const data = await res.json();
           const {result} = data;
@@ -229,6 +269,7 @@ const TransactionHistoryScreen = ({
                 value: bitbox.BitcoinCash.toBitcoinCash(
                   Number(tx.value),
                 ).toFixed(4),
+                note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
             setTransactionList(newList);
           }
@@ -239,6 +280,7 @@ const TransactionHistoryScreen = ({
       setRefreshing(false);
     };
     fetchTransaction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshing]);
 
   const keyExtractor = (item, index) => index.toString();
@@ -268,7 +310,7 @@ const TransactionHistoryScreen = ({
             <Text>{item.status === 'Send' ? item.to : item.from}</Text>
           </View>
           <View style={styles.itemCol}>
-            <Text style={{color: colors.mainDark}}>Note: </Text>
+            <Text style={{color: colors.mainDark}}>{`Note: ${item.note}`}</Text>
           </View>
         </View>
       }
@@ -382,6 +424,7 @@ const mapStateToProps = state => ({
   current: state.wallet.current,
   phrase: state.wallet.phrase,
   currency: state.wallet.currency,
+  uuidMobile: state.wallet.uuid,
 });
 
 const mapDispatchToProps = {};

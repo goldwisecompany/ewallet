@@ -32,3 +32,8 @@ export const updateBlogs = payload => ({
   type: 'UPDATE_BLOGS',
   payload,
 });
+
+export const registerUuid = payload => ({
+  type: 'REGISTER_UUID',
+  payload,
+});

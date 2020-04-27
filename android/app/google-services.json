@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "778704778250",
+    "firebase_url": "https://com-wallet-prance.firebaseio.com",
+    "project_id": "com-wallet-prance",
+    "storage_bucket": "com-wallet-prance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778704778250:android:55b143eb18aa85e8d09bf3",
+        "android_client_info": {
+          "package_name": "com.ewallet.prance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778704778250-e2n6nc6onbdju1vudsidm866uk93qatn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ewallet.prance",
+            "certificate_hash": "b99dfa3875493e7ffe4220fb468a5209053fd283"
+          }
+        },
+        {
+          "client_id": "778704778250-l165rmcm2v96aqd9jrjjhn9ng2dgr94g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeCOWpqVpCKyCUV6sqF5j9XGgOwHOz1S8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778704778250-l165rmcm2v96aqd9jrjjhn9ng2dgr94g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

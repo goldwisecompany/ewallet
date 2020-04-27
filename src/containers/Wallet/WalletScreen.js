@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
+import firebase from '@react-native-firebase/app';
+// import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
+// import DeviceInfo from 'react-native-device-info';
+import uuid from 'react-native-uuid';
 import {
   Alert,
+  Dimensions,
   FlatList,
   Image,
   View,
@@ -13,7 +19,7 @@ import Swiper from 'react-native-swiper';
 import {web3, tronWeb, erc20Abi, bitbox} from '../../services/wallet';
 import {colors, fonts} from '../../styles';
 import {getPrice} from '../../services/api';
-import {updateBlogs} from '../../actions/index';
+import {updateBlogs, registerUuid} from '../../actions/index';
 
 const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
@@ -21,6 +27,9 @@ const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
 const PRN = require('../../assets/PRN.png');
 const USDT = require('../../assets/USDT.png');
+
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 const WalletScreen = ({
   navigation,
@@ -30,6 +39,9 @@ const WalletScreen = ({
   walletName,
   blogs,
   updateBlogsConnect,
+  registerUuidConnect,
+  phrase,
+  uuidMobile,
 }) => {
   const [balances, setBalances] = useState({
     PRN: '0',
@@ -74,6 +86,8 @@ const WalletScreen = ({
     return unsubscribe;
   }, [refreshing, navigation]);
 
+  console.log(firebase);
+
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {
@@ -87,6 +101,42 @@ const WalletScreen = ({
     };
     fetchBlogArticles();
   }, []);
+
+  useEffect(() => {
+    const firebaseSync = async () => {
+      const uid = uuid.v4();
+      registerUuidConnect(uid);
+
+      firestore()
+        .collection('user')
+        .doc(uuidMobile || uid)
+        .get()
+        .then(documentSnapshot => {
+          if (documentSnapshot.exists) {
+            firestore()
+              .collection('user')
+              .doc(uuidMobile || uid)
+              .update({
+                myWallets,
+              })
+              .then(() => {
+                console.log('User added!');
+              });
+          } else {
+            firestore()
+              .collection('user')
+              .doc(uuidMobile || uid)
+              .set({
+                myWallets,
+              })
+              .then(() => {
+                console.log('User added!');
+              });
+          }
+        });
+    };
+    firebaseSync();
+  }, [])
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -126,13 +176,21 @@ const WalletScreen = ({
 
   const getEthBalance = async () => {
     try {
-      const [weiBalance, sunBalance, {balance: bchBalance}] = await Promise.all(
-        [
+      let ethBalance = '0';
+      let trxBalance = '0';
+      let bchBalance = '0';
+      try {
+        const [weiBalance, sunBalance, {balance}] = await Promise.all([
           web3.eth.getBalance(myWallets[current].ETH.address),
           tronWeb.trx.getBalance(myWallets[current].TRX.address),
           bitbox.Address.details(myWallets[current].BCH.address),
-        ],
-      );
+        ]);
+        ethBalance = web3.utils.fromWei(weiBalance || '0', 'ether');
+        trxBalance = tronWeb.fromSun(sunBalance.toString() || '0');
+        bchBalance = balance;
+      } catch (error) {
+        console.log(error);
+      }
       let btcSatoshiBalance = 0;
 
       try {
@@ -155,10 +213,15 @@ const WalletScreen = ({
         erc20Abi,
         '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a', // Ropsten
       );
-      const prnbalance =
-        (await prnTokenContract.methods
+
+      let prnbalance = 0;
+      try {
+        prnbalance = await prnTokenContract.methods
           .balanceOf(myWallets[current].ETH.address)
-          .call()) || 0;
+          .call();
+      } catch (error) {
+        prnbalance = 0;
+      }
 
       const usdtTokenContract = new web3.eth.Contract(
         erc20Abi,
@@ -170,8 +233,6 @@ const WalletScreen = ({
           .balanceOf(myWallets[current].ETH.address)
           .call()) || 0;
 
-      const ethBalance = web3.utils.fromWei(weiBalance || '0', 'ether');
-      const trxBalance = tronWeb.fromSun(sunBalance.toString() || '0');
       const btcBalance = bitbox.BitcoinCash.toBitcoinCash(
         btcSatoshiBalance,
       ).toString();
@@ -284,10 +345,10 @@ const WalletScreen = ({
             {blogs.map(item => (
               <View style={styles.slide} key={item.id}>
                 <Image
+                  resizeMode="center"
                   style={styles.image}
                   source={{uri: item.originalImageUrl || item.image}}
                 />
-                <Text style={styles.text}>1</Text>
               </View>
             ))}
           </Swiper>
@@ -402,6 +463,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.mainLightTrans,
   },
   text: {
     color: '#fff',
@@ -417,7 +479,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   image: {
-    width: '100%',
+    width: deviceWidth,
     height: '100%',
   },
 });
@@ -428,10 +490,13 @@ const mapStateToProps = state => ({
   currency: state.wallet.currency,
   walletName: state.wallet.walletName,
   blogs: state.wallet.blogs,
+  phrase: state.wallet.phrase,
+  uuidMobile: state.wallet.uuid,
 });
 
 const mapDispatchToProps = {
   updateBlogsConnect: updateBlogs,
+  registerUuidConnect: registerUuid,
 };
 
 export default connect(
