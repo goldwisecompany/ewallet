@@ -86,8 +86,6 @@ const WalletScreen = ({
     return unsubscribe;
   }, [refreshing, navigation]);
 
-  console.log(firebase);
-
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {

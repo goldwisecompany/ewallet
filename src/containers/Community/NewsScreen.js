@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import {createWallet} from '../../actions/index';
 import CryptoNewsApi from 'crypto-news-api';
 // import {WebView} from 'react-native-webview';
-import {TabBar, TabView, SceneMap} from 'react-native-tab-view';
+import {TabBar, TabView} from 'react-native-tab-view';
 const Api = new CryptoNewsApi('389b9cbc389a81600771e47dd922ab52');
 
 const initialLayout = {width: Dimensions.get('window').width};
@@ -20,12 +20,14 @@ const initialLayout = {width: Dimensions.get('window').width};
 const NewsScreen = ({navigation}) => {
   const [articles, setArticles] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [investmentProjects, setInvestmentProjects] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshingBlog, setRefreshingBlog] = useState(false);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'first', title: 'News'},
     {key: 'second', title: 'Blogs'},
+    {key: 'third', title: 'Investment'},
   ]);
 
   const FirstRoute = () => (
@@ -48,6 +50,14 @@ const NewsScreen = ({navigation}) => {
     />
   );
 
+  const ThirdRoute = () => (
+    <FlatList
+      keyExtractor={keyExtractor}
+      data={investmentProjects}
+      renderItem={renderItem}
+    />
+  );
+
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {
@@ -59,6 +69,22 @@ const NewsScreen = ({navigation}) => {
         console.log(error);
       }
       setRefreshingBlog(false);
+      setInvestmentProjects([
+        {
+          title: 'DeBank',
+          url: 'https://debank.com/',
+          image: 'https://debank.com/static/media/new-addr.12e06acf.png',
+          subtitle:
+            "DeBank's mission is to build a bridge between users and DeFi tech.",
+        },
+        {
+          title: 'Celsius Network',
+          url: 'https://celsius.network/',
+          image:
+            'https://23m75o3e07wtfdo7h17w4u61-wpengine.netdna-ssl.com/wp-content/themes/wpog_celsius/assets/img/logo-celsius@2x.png',
+          subtitle: 'Earn, Borrow & Pay on the Blockchain',
+        },
+      ]);
     };
     fetchBlogArticles();
   }, [refreshingBlog]);
@@ -74,6 +100,18 @@ const NewsScreen = ({navigation}) => {
         setRefreshing(false);
       });
   }, [refreshing]);
+
+  useEffect(() => {
+    const fetchInvestmentProjects = async () => {
+      try {
+        const response = await fetch('https://celsius.network/');
+        console.log(await response.text(), 'res');
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchInvestmentProjects();
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -92,12 +130,13 @@ const NewsScreen = ({navigation}) => {
       containerStyle={styles.listItem}
       leftElement={
         <Image
+          resizeMode="contain"
           style={styles.image}
           source={{uri: item.originalImageUrl || item.image}}
         />
       }
       bottomDivider
-      subtitle={item.sourceDomain}
+      subtitle={item.sourceDomain || item.subtitle}
       onPress={() => Linking.openURL(item.url || item.detail)}
     />
   );
@@ -122,6 +161,8 @@ const NewsScreen = ({navigation}) => {
               return FirstRoute();
             case 'second':
               return SecondRoute();
+            case 'third':
+              return ThirdRoute();
             default:
               return null;
           }
