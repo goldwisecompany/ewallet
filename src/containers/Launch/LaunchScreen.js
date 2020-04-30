@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Button, Text} from 'react-native-elements';
 import {colors} from '../../styles';
 
-const PRN = require('../../assets/PRN.png');
+const PRN = require('../../assets/imgPRN.png');
 
 const LaunchScreen = ({navigation, isGenerating}) => {
   const onPressCreateAccount = () => {

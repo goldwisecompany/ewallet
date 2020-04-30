@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
 import {updateBlogs} from '../../actions/index';
 
-const PRN = require('../../assets/PRN.png');
+const PRN = require('../../assets/imgPRN.png');
 
 const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
   useEffect(() => {

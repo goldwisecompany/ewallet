@@ -10,7 +10,7 @@ const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
 const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
-const PRN = require('../../assets/PRN.png');
+const PRN = require('../../assets/imgPRN.png');
 const USDT = require('../../assets/USDT.png');
 
 const TransactionHistoryScreen = ({
