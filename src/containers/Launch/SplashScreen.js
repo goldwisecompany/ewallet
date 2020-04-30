@@ -20,7 +20,7 @@ const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {
-        const res = await fetch('http://pranceworld.site/api/blogs');
+        const res = await fetch('https://pranceworld.site/api/blogs');
         const data = await res.json();
         updateBlogsConnect(data);
       } catch (error) {

@@ -61,7 +61,7 @@ const NewsScreen = ({navigation}) => {
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {
-        const res = await fetch('http://pranceworld.site/api/blogs');
+        const res = await fetch('https://pranceworld.site/api/blogs');
         const data = await res.json();
         console.log(data);
         setBlogs(data);

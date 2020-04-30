@@ -89,7 +89,7 @@ const WalletScreen = ({
   useEffect(() => {
     const fetchBlogArticles = async () => {
       try {
-        const res = await fetch('http://pranceworld.site/api/blogs');
+        const res = await fetch('https://pranceworld.site/api/blogs');
         const data = await res.json();
         updateBlogsConnect(data);
       } catch (error) {
@@ -293,7 +293,7 @@ const WalletScreen = ({
       console.log(error.message, 'error');
     }
     try {
-      const res = await fetch('http://pranceworld.site/api/blogs');
+      const res = await fetch('https://pranceworld.site/api/blogs');
       const data = await res.json();
       updateBlogsConnect(data);
     } catch (error) {
