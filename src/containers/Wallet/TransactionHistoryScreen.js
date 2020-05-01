@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, Image, RefreshControl, View, StyleSheet} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  RefreshControl,
+  View,
+  StyleSheet,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
 import {colors} from '../../styles';
@@ -23,6 +30,7 @@ const TransactionHistoryScreen = ({
   uuidMobile,
 }) => {
   const coin = (route.params && route.params.coin) || 'PRN';
+  const [isInit, setIsInit] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [transactionList, setTransactionList] = useState([]);
 
@@ -278,6 +286,7 @@ const TransactionHistoryScreen = ({
         console.log(error);
       }
       setRefreshing(false);
+      setIsInit(false);
     };
     fetchTransaction();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,7 +356,12 @@ const TransactionHistoryScreen = ({
         ))}
       </View>
       <View style={styles.list}>
-        {transactionList.length === 0 ? (
+        {isInit ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size="large" color="gray" />
+          </View>
+        ) : transactionList.length === 0 ? (
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text>No data.</Text>

@@ -21,8 +21,7 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
     } else {
       navigation.dispatch(
         StackActions.replace('RecoveryPhrase', {
-          phrase:
-            phrase[(route.params && route.params.currentIndex) || current],
+          phrase: phrase[route.params.currentIndex] || phrase[current],
         }),
       );
     }
