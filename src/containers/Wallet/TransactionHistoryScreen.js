@@ -274,9 +274,7 @@ const TransactionHistoryScreen = ({
                     ? 'Send'
                     : 'Receive',
                 date: new Date(tx.timeStamp * 1000).toLocaleString(),
-                value: bitbox.BitcoinCash.toBitcoinCash(
-                  Number(tx.value),
-                ).toFixed(4),
+                value: web3.utils.fromWei(tx.value, 'mwei'),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
             setTransactionList(newList);
