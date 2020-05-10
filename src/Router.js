@@ -21,6 +21,9 @@ import TransactionHistoryScreen from './containers/Wallet/TransactionHistoryScre
 // Community
 import NewsScreen from './containers/Community/NewsScreen';
 
+// Ecosystem
+import EcosystemScreen from './containers/Ecosystem/EcosystemScreen';
+
 // Setting
 import SettingScreen from './containers/Setting/SettingScreen';
 import WalletManagementScreen from './containers/Setting/WalletManagementScreen';
@@ -31,6 +34,7 @@ import TermsofServiceScreen from './containers/Setting/TermsofServiceScreen';
 import PrivacyPolicyScreen from './containers/Setting/PrivacyPolicyScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome5';
 import {colors, fonts} from './styles';
 
 const setStackOptions = title => ({
@@ -82,6 +86,16 @@ const CommunityStack = () => (
   </Stack.Navigator>
 );
 
+const EcosystemStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="News"
+      component={EcosystemScreen}
+      options={setStackOptions('Ecosystem')}
+    />
+  </Stack.Navigator>
+);
+
 const SettingStack = () => (
   <Stack.Navigator>
     <Stack.Screen
@@ -126,12 +140,15 @@ const MainTabStack = () => (
   <Tab.Navigator
     screenOptions={({route}) => ({
       tabBarIcon: ({focused, color, size}) => {
-        const icons = {
-          Wallet: 'ios-wallet',
-          News: 'md-paper',
-          Setting: 'ios-settings',
-        };
-        return <Icon name={icons[route.name]} size={30} color={color} />;
+        if (route.name !== 'Ecosystem') {
+          const icons = {
+            Wallet: 'ios-wallet',
+            News: 'md-paper',
+            Setting: 'ios-settings',
+          };
+          return <Icon name={icons[route.name]} size={30} color={color} />;
+        }
+        return <Icon2 name={'react'} size={30} color={color} />;
       },
     })}
     tabBarOptions={{
@@ -153,6 +170,7 @@ const MainTabStack = () => (
       }}
     />
     <Tab.Screen name="News" component={CommunityStack} />
+    <Tab.Screen name="Ecosystem" component={EcosystemStack} />
     <Tab.Screen
       name="Setting"
       component={SettingStack}

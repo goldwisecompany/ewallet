@@ -328,8 +328,6 @@ const WalletScreen = ({
     />
   );
 
-  console.log(blogs);
-
   return (
     <View style={styles.container}>
       {/* TODO: Banner */}
