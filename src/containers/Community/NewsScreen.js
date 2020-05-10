@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {ListItem} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
 import {createWallet} from '../../actions/index';
 import CryptoNewsApi from 'crypto-news-api';
@@ -63,7 +64,6 @@ const NewsScreen = ({navigation}) => {
       try {
         const res = await fetch('https://pranceworld.site/api/blogs');
         const data = await res.json();
-        console.log(data);
         setBlogs(data);
       } catch (error) {
         console.log(error);
@@ -93,25 +93,12 @@ const NewsScreen = ({navigation}) => {
     Api.getTopNews()
       .then(articlesData => {
         setArticles(articlesData);
-        console.log(articlesData);
         setRefreshing(false);
       })
       .catch(error => {
         setRefreshing(false);
       });
   }, [refreshing]);
-
-  useEffect(() => {
-    const fetchInvestmentProjects = async () => {
-      try {
-        const response = await fetch('https://celsius.network/');
-        console.log(await response.text(), 'res');
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchInvestmentProjects();
-  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -141,11 +128,23 @@ const NewsScreen = ({navigation}) => {
     />
   );
 
+  const renderIcon = ({route, color}) => {
+    const icons = {
+      News: 'newspaper',
+      Blogs: 'rss',
+      Investment: 'currency-usd',
+    };
+    return (
+      <Icon name={icons[route.title]} size={20} iconStyle={{marginTop: 0}} />
+    );
+  };
+
   const renderTabBar = props => (
     <TabBar
       {...props}
       style={{backgroundColor: 'white'}}
       indicatorStyle={{backgroundColor: 'black'}}
+      renderIcon={renderIcon}
       labelStyle={{color: 'black'}}
     />
   );
