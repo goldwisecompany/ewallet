@@ -53,7 +53,7 @@ const SendScreen = ({
     ) {
       Alert.alert(
         'Transfer',
-        'Are you sure you want to submit the transaction?',
+        'Are you sure you want to sent the transaction?',
         [
           {
             text: 'Cancel',
@@ -68,11 +68,9 @@ const SendScreen = ({
 
   const pendingMessage = () => {
     setDisabled(true);
-    Alert.alert(
-      'Transaction Pending',
-      'The transaction has been broadcast. Please wait for a while.',
-      [{text: 'OK', onPress: () => transfer()}],
-    );
+    Alert.alert('Transaction Sent!', 'The transaction has been sent.', [
+      {text: 'OK', onPress: () => transfer()},
+    ]);
   };
 
   const transfer = async () => {
@@ -100,7 +98,7 @@ const SendScreen = ({
         );
       } else if (coin === 'BTC') {
         // TODO: txid
-        await transferBtc(
+        txid = await transferBtc(
           receiver,
           amount,
           myWallets[current][coin].address,
