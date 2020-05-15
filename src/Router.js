@@ -23,6 +23,7 @@ import NewsScreen from './containers/Community/NewsScreen';
 
 // Ecosystem
 import EcosystemScreen from './containers/Ecosystem/EcosystemScreen';
+import EcoBlogsScreen from './containers/Ecosystem/EcoBlogsScreen';
 
 // Setting
 import SettingScreen from './containers/Setting/SettingScreen';
@@ -91,9 +92,14 @@ const CommunityStack = () => (
 const EcosystemStack = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="News"
+      name="Ecosystem"
       component={EcosystemScreen}
       options={setStackOptions('Ecosystem')}
+    />
+    <Stack.Screen
+      name="EcoBlogs"
+      component={EcoBlogsScreen}
+      options={setStackOptions('Ecosystem Intro')}
     />
   </Stack.Navigator>
 );

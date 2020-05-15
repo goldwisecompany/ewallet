@@ -93,7 +93,6 @@ const WalletScreen = ({
         const data = await res.json();
         updateBlogsConnect(data);
       } catch (error) {
-        console.log(error);
         updateBlogsConnect([]);
       }
     };
@@ -134,7 +133,7 @@ const WalletScreen = ({
         });
     };
     firebaseSync();
-  }, [])
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -297,7 +296,6 @@ const WalletScreen = ({
       const data = await res.json();
       updateBlogsConnect(data);
     } catch (error) {
-      console.log(error);
       updateBlogsConnect([]);
     }
     setRefreshing(false);
@@ -374,9 +372,9 @@ const WalletScreen = ({
           }}>
           <Icon
             type="material-community"
-            name="wallet"
+            name="account"
             size={20}
-            iconStyle={{marginTop: 5}}
+            iconStyle={{marginTop: 3}}
           />
           <View style={{width: 20}} />
           <Text style={styles.subtitle}>{walletName[current]}</Text>
@@ -442,7 +440,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   subtitle: {
-    fontSize: 24,
+    fontSize: 16,
   },
   list: {
     flex: 1,

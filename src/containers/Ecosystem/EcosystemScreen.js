@@ -3,10 +3,12 @@ import {
   Image,
   Linking,
   FlatList,
+  ScrollView,
   View,
   Text,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -32,21 +34,67 @@ const EcosystemScreen = ({navigation}) => {
     fetchAPI();
   }, []);
 
+  const onPressBlogs = type => {
+    navigation.navigate('EcoBlogs', {type});
+  };
+
   return (
-    <View style={styles.container}>
-      {data &&
-        data.map(blogItem => (
-          <View style={{flex: 1}} key={blogItem.id}>
-            <Image
-              style={{width: deviceWidth, height: '100%'}}
-              source={{uri: blogItem.image}}
-            />
-            <View style={styles.textWrapper}>
-              <Text style={styles.text}>{blogItem.type}</Text>
-            </View>
-          </View>
-        ))}
-    </View>
+    <ScrollView style={styles.container}>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('casino')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/casino.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Game</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('island')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/island.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Resort</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('hotel')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/hotel.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Hotel</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('yacht')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/yacht.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Yacht</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('travel')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/travel.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Travel</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('otc')}>
+        <Image
+          style={{width: deviceWidth, height: deviceHeight / 4}}
+          source={require('../../assets/otc.jpg')}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>OTC</Text>
+        </View>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
