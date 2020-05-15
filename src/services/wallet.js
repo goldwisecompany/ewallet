@@ -261,12 +261,13 @@ export const generateCoinWallet = async (phrase, coinType) => {
   if (coinType === '0') {
     const hdWalletRoot = Bitcoin.bip32.fromSeed(seed);
     node = hdWalletRoot.derivePath("m/44'/0'/0'/0/0");
+    // TODO:
     return {
       phrase,
       privateKey: node.toWIF(),
       address: Bitcoin.payments.p2pkh({
         pubkey: node.publicKey,
-        network: Bitcoin.networks.mainnet,
+        network: Bitcoin.networks.bitcoin,
       }).address,
     };
   } else if (coinType === '145') {
@@ -387,44 +388,54 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
 };
 
 export const transferBtc = async (receiver, amount, sender, privateKey) => {
-  const url = 'https://blockchain.info/unspent?active=';
+  // TODO: migrate to mainnet
+  const url = 'https://api.blockcypher.com/v1/btc/main/addrs/';
   const amountInSatoshi = bitbox.BitcoinCash.toSatoshi(amount);
   let balance = 0;
   const mainnet = Bitcoin.networks.bitcoin;
   try {
     const result = await fetch(`${url}${sender}`);
     const json = await result.json();
-    const unspentOutputs = json.unspent_outputs;
+    let unspentOutputs = json.txrefs.filter(
+      item => !item.spent && item.tx_output_n !== -1,
+    );
     const txb = new Bitcoin.TransactionBuilder(mainnet);
     unspentOutputs.every(item => {
       balance += item.value;
       txb.addInput(item.tx_hash, item.tx_output_n);
       return amountInSatoshi + 15000 > balance;
     });
-
     // UTXO Output
     txb.addOutput(receiver, amountInSatoshi);
     txb.addOutput(sender, balance - amountInSatoshi - 15000); // Change Address, fee:15000
     // Add private key
-    const key = Bitcoin.ECPair.fromWIF(privateKey);
+    const key = Bitcoin.ECPair.fromWIF(privateKey, mainnet);
     // Sign
-    unspentOutputs.forEach((item, index) => {
+    txb.__INPUTS.forEach((item, index) => {
       txb.sign(index, key);
     });
     const tx = txb.build().toHex();
+    const pushTx = {
+      tx,
+    };
     // Main:
     // https://blockchain.info/pushtx
     // https://live.blockcypher.com/btc/pushtx/
     // https://blockexplorer.com/api/tx/send
+    // https://api.blockcypher.com/v1/btc/main/txs/push
     // test:
     // https://api.blockcypher.com/v1/btc/test3/txs/push
-    const txResult = await fetch('https://blockchain.info/pushtx', {
-      method: 'post',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: JSON.stringify(tx),
-    });
+    const txResult = await fetch(
+      'https://api.blockcypher.com/v1/btc/main/txs/push',
+      {
+        method: 'post',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: JSON.stringify(pushTx),
+      },
+    );
     const receipt = await txResult.json();
-    return receipt;
+    const hash = (receipt && receipt.tx && receipt.tx.hash) || '';
+    return hash;
   } catch (error) {
     if (error.message === 'Unexpected token N in JSON at position 0') {
       throw new Error('No free outputs to spend');

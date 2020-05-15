@@ -18,16 +18,17 @@ const SettingScreen = ({navigation, currency}) => {
       chevron: true,
       onPress: () => navigation.navigate('Currency'),
     },
-    // TODO:
     {
       name: 'FAQ',
       icon: 'error',
       chevron: true,
+      onPress: () => navigation.navigate('Faq'),
     },
     {
       name: 'About us',
       icon: 'people',
       chevron: true,
+      onPress: () => navigation.navigate('AboutUs'),
     },
     {
       name: 'Terms of Service',

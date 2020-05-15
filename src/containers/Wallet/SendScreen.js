@@ -5,6 +5,7 @@ import {Icon, Button, Input, Text} from 'react-native-elements';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import RNPickerSelect from 'react-native-picker-select';
+import {StackActions} from '@react-navigation/native';
 import {
   transferEth,
   transferTrx,
@@ -77,8 +78,9 @@ const SendScreen = ({
     setPending(true);
     const timer = setTimeout(() => {
       setDisabled(false);
+      navigation.popToTop();
       clearTimeout(timer);
-    }, 5000);
+    }, 2000);
     let txid = '';
     try {
       if (coin === 'ETH') {
@@ -134,6 +136,7 @@ const SendScreen = ({
       Alert.alert('Transaction error', error.message);
     }
 
+    setPending(false);
     firestore()
       .collection('user')
       .doc('txdata')
@@ -142,8 +145,8 @@ const SendScreen = ({
       })
       .then(() => {
         console.log('User added!');
-      });
-    setPending(false);
+      })
+      .catch(console.log);
   };
 
   return (
@@ -272,21 +275,21 @@ const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
     paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     borderRadius: 4,
     color: 'black',
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    fontSize: 18,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 4,
     color: 'black',
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   iconContainer: {
-    width: 40,
+    width: 50,
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',

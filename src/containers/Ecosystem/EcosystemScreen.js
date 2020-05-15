@@ -17,35 +17,35 @@ const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 const EcosystemScreen = ({navigation}) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await fetch('https://pranceworld.site/api/ecoBlogs');
+        const result = await res.json();
+        setData(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAPI();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <View style={{flex: 1}}>
-        <Image
-          style={{width: deviceWidth, height: '100%'}}
-          source={require('../../assets/casino.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Game</Text>
-        </View>
-      </View>
-      <View style={{flex: 1}}>
-        <Image
-          style={{width: deviceWidth, height: '100%'}}
-          source={require('../../assets/travel.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Travel</Text>
-        </View>
-      </View>
-      <View style={{flex: 1}}>
-        <Image
-          style={{width: deviceWidth, height: '100%'}}
-          source={require('../../assets/hotel.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Hotel</Text>
-        </View>
-      </View>
+      {data &&
+        data.map(blogItem => (
+          <View style={{flex: 1}} key={blogItem.id}>
+            <Image
+              style={{width: deviceWidth, height: '100%'}}
+              source={{uri: blogItem.image}}
+            />
+            <View style={styles.textWrapper}>
+              <Text style={styles.text}>{blogItem.type}</Text>
+            </View>
+          </View>
+        ))}
     </View>
   );
 };
@@ -53,7 +53,7 @@ const EcosystemScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'white',
   },
   scene: {
     flex: 1,

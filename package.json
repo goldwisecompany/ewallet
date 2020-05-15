@@ -9,7 +9,8 @@
     "test": "jest",
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/rn-nodeify --install 'crypto,buffer,react-native-randombytes,vm,stream,http,https,os,url,net,fs' --hack --yarn && npx patch-package && npx jetify",
-    "build:apk": "react-native run-android --variant=release"
+    "build:apk": "react-native run-android --variant=release",
+    "start:macos": "node node_modules/react-native-macos/local-cli/cli.js start --use-react-native-macos"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.8.1",
@@ -52,6 +53,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-indicators": "^0.17.0",
     "react-native-level-fs": "^3.0.1",
+    "react-native-macos": "^0.61.0-0",
     "react-native-os": "^1.2.6",
     "react-native-picker-select": "^6.6.0",
     "react-native-qrcode-svg": "^6.0.3",

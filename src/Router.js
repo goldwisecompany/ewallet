@@ -32,6 +32,8 @@ import RecoveryPhraseScreen from './containers/Setting/RecoveryPhraseScreen';
 import PinCodeScreen from './containers/Setting/PinCodeScreen';
 import TermsofServiceScreen from './containers/Setting/TermsofServiceScreen';
 import PrivacyPolicyScreen from './containers/Setting/PrivacyPolicyScreen';
+import FaqScreen from './containers/Setting/FaqScreen';
+import AboutUsScreen from './containers/Setting/AboutUsScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/FontAwesome5';
@@ -132,6 +134,16 @@ const SettingStack = () => (
       name="PrivacyPolicy"
       component={PrivacyPolicyScreen}
       options={setStackOptions('Privacy Policy')}
+    />
+    <Stack.Screen
+      name="Faq"
+      component={FaqScreen}
+      options={setStackOptions('FAQ')}
+    />
+    <Stack.Screen
+      name="AboutUs"
+      component={AboutUsScreen}
+      options={setStackOptions('About Us')}
     />
   </Stack.Navigator>
 );
