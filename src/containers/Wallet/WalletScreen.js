@@ -339,7 +339,7 @@ const WalletScreen = ({
             {blogs.map(item => (
               <View style={styles.slide} key={item.id}>
                 <Image
-                  resizeMode="center"
+                  resizeMode="contain"
                   style={styles.image}
                   source={{uri: item.originalImageUrl || item.image}}
                 />

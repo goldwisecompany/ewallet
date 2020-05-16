@@ -38,8 +38,9 @@ const EcoBlogsScreen = ({navigation, route}) => {
         />
       }
       bottomDivider
+      subtitleStyle={{ height: 20 }}
       subtitle={item.sourceDomain || item.subtitle || item.body}
-      onPress={() => Linking.openURL(item.url || item.detail)}
+      onPress={() => navigation.navigate('EcoDetail', {blog: item})}
     />
   );
 

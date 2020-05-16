@@ -39,62 +39,66 @@ const EcosystemScreen = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('casino')}>
-        <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
-          source={require('../../assets/casino.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Game</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('island')}>
-        <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
-          source={require('../../assets/island.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Resort</Text>
-        </View>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('casino')}>
+          <Image
+            style={{width: deviceWidth / 2, height: '100%'}}
+            source={require('../../assets/casino.jpg')}
+          />
+          <View style={styles.textWrapper}>
+            <Text style={styles.text}>Game</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('island')}>
+          <Image
+            style={{width: deviceWidth / 2, height: '100%'}}
+            source={require('../../assets/island.jpg')}
+          />
+          <View style={styles.textWrapper}>
+            <Text style={styles.text}>Resort</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('hotel')}>
         <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
+          style={{width: deviceWidth, height: '100%'}}
           source={require('../../assets/hotel.jpg')}
         />
         <View style={styles.textWrapper}>
           <Text style={styles.text}>Hotel</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('yacht')}>
-        <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
-          source={require('../../assets/yacht.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Yacht</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('travel')}>
-        <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
-          source={require('../../assets/travel.jpg')}
-        />
-        <View style={styles.textWrapper}>
-          <Text style={styles.text}>Travel</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('yacht')}>
+          <Image
+            style={{width: deviceWidth / 2, height: '100%'}}
+            source={require('../../assets/yacht.jpg')}
+          />
+          <View style={styles.textWrapper}>
+            <Text style={styles.text}>Yacht</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('travel')}>
+          <Image
+            style={{width: deviceWidth / 2, height: '100%'}}
+            source={require('../../assets/travel.jpg')}
+          />
+          <View style={styles.textWrapper}>
+            <Text style={styles.text}>Travel</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('otc')}>
         <Image
-          style={{width: deviceWidth, height: deviceHeight / 4}}
+          style={{width: deviceWidth, height: '100%'}}
           source={require('../../assets/otc.jpg')}
         />
         <View style={styles.textWrapper}>
           <Text style={styles.text}>OTC</Text>
         </View>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -102,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    height: '100%',
   },
   scene: {
     flex: 1,
