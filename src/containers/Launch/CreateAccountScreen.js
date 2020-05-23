@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {KeyboardAvoidingView, Platform, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {Button, Input} from 'react-native-elements';
 import {updateData} from '../../actions/index';
 import {colors} from '../../styles';
@@ -14,19 +13,27 @@ const CreateAccountScreen = ({
 }) => {
   const [nickname, setNickname] = useState('');
   const [inputPinCode, setInputPinCode] = useState('');
+  const [confirmPinCode, setConfirmPinCode] = useState('');
+  const [isChecked, setIsChecked] = useState(true);
 
   const onPressLoading = () => {
-    updateDataConnect({
-      walletName: nickname,
-      pinCode: inputPinCode || pinCode,
-    });
-    navigation.navigate('Loading', {
-      recoveryPhrase: route.params && route.params.recoveryPhrase,
-    });
+    if (confirmPinCode !== inputPinCode) {
+      setIsChecked(false);
+      confirmInput.current.shake();
+    } else {
+      updateDataConnect({
+        walletName: nickname,
+        pinCode: inputPinCode || pinCode,
+      });
+      navigation.navigate('Loading', {
+        recoveryPhrase: route.params && route.params.recoveryPhrase,
+      });
+    }
   };
 
   const isSetupPinCode = pinCode !== '';
   const input = React.createRef();
+  const confirmInput = React.createRef();
 
   return (
     <KeyboardAvoidingView
@@ -43,15 +50,28 @@ const CreateAccountScreen = ({
           onChangeText={text => setNickname(text)}
         />
         {!isSetupPinCode && (
-          <Input
-            containerStyle={{margin: 10}}
-            inputStyle={{marginLeft: 10}}
-            placeholder="Password (6 ~ 14 characters)"
-            leftIcon={{type: 'ionicon', name: 'ios-lock'}}
-            leftIconContainerStyle={{width: 40, marginLeft: 0}}
-            onChangeText={pin => setInputPinCode(pin)}
-            maxLength={14}
-          />
+          <>
+            <Input
+              containerStyle={{margin: 10}}
+              inputStyle={{marginLeft: 10}}
+              placeholder="Password (6 ~ 14 characters)"
+              leftIcon={{type: 'ionicon', name: 'ios-lock'}}
+              leftIconContainerStyle={styles.leftIconContainerStyle}
+              onChangeText={pin => setInputPinCode(pin)}
+              maxLength={14}
+            />
+            <Input
+              ref={confirmInput}
+              containerStyle={{margin: 10}}
+              inputStyle={{marginLeft: 10}}
+              placeholder="Confirm Password"
+              leftIcon={{type: 'ionicon', name: 'ios-lock'}}
+              leftIconContainerStyle={styles.leftIconContainerStyle}
+              onChangeText={pin => setConfirmPinCode(pin)}
+              maxLength={14}
+              errorMessage={isChecked ? '' : 'Password Inconsistent'}
+            />
+          </>
         )}
       </View>
       <Button
@@ -81,6 +101,10 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 50,
     backgroundColor: colors.mainLight,
+  },
+  leftIconContainerStyle: {
+    width: 40,
+    marginLeft: 0,
   },
 });
 
