@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Image, Linking, FlatList, View, StyleSheet} from 'react-native';
+import {Image, FlatList, View, StyleSheet, Text} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {createWallet} from '../../actions/index';
@@ -38,8 +38,13 @@ const EcoBlogsScreen = ({navigation, route}) => {
         />
       }
       bottomDivider
-      subtitleStyle={{ height: 20 }}
-      subtitle={item.sourceDomain || item.subtitle || item.body}
+      subtitle={
+        <View style={styles.subtitle}>
+          <Text ellipsizeMode="tail" numberOfLines={1}>
+            {item.sourceDomain || item.subtitle || item.body}
+          </Text>
+        </View>
+      }
       onPress={() => navigation.navigate('EcoDetail', {blog: item})}
     />
   );
@@ -89,6 +94,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 2,
     color: 'white',
+  },
+  subtitle: {
+    height: 30,
+    justifyContent: 'center',
   },
 });
 

@@ -1,21 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {
   Image,
-  Linking,
-  FlatList,
-  ScrollView,
   View,
   Text,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {ListItem} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
 import {createWallet} from '../../actions/index';
 
-const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 const EcosystemScreen = ({navigation}) => {
@@ -26,6 +20,7 @@ const EcosystemScreen = ({navigation}) => {
       try {
         const res = await fetch('https://pranceworld.site/api/ecoBlogs');
         const result = await res.json();
+        console.log(result);
         setData(result);
       } catch (error) {
         console.log(error);
@@ -40,19 +35,23 @@ const EcosystemScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, flexDirection: 'row' }}>
-        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('casino')}>
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.scene}
+          onPress={() => onPressBlogs('casino')}>
           <Image
-            style={{width: deviceWidth / 2, height: '100%'}}
+            style={styles.halfImage}
             source={require('../../assets/casino.jpg')}
           />
           <View style={styles.textWrapper}>
             <Text style={styles.text}>Game</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('island')}>
+        <TouchableOpacity
+          style={styles.scene}
+          onPress={() => onPressBlogs('island_vacation')}>
           <Image
-            style={{width: deviceWidth / 2, height: '100%'}}
+            style={styles.halfImage}
             source={require('../../assets/island.jpg')}
           />
           <View style={styles.textWrapper}>
@@ -60,28 +59,34 @@ const EcosystemScreen = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('hotel')}>
+      <TouchableOpacity
+        style={styles.scene}
+        onPress={() => onPressBlogs('hotel')}>
         <Image
-          style={{width: deviceWidth, height: '100%'}}
+          style={styles.fullImage}
           source={require('../../assets/hotel.jpg')}
         />
         <View style={styles.textWrapper}>
           <Text style={styles.text}>Hotel</Text>
         </View>
       </TouchableOpacity>
-      <View style={{ flex: 1, flexDirection: 'row' }}>
-        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('yacht')}>
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.scene}
+          onPress={() => onPressBlogs('yacht')}>
           <Image
-            style={{width: deviceWidth / 2, height: '100%'}}
+            style={styles.halfImage}
             source={require('../../assets/yacht.jpg')}
           />
           <View style={styles.textWrapper}>
             <Text style={styles.text}>Yacht</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('travel')}>
+        <TouchableOpacity
+          style={styles.scene}
+          onPress={() => onPressBlogs('travel')}>
           <Image
-            style={{width: deviceWidth / 2, height: '100%'}}
+            style={styles.halfImage}
             source={require('../../assets/travel.jpg')}
           />
           <View style={styles.textWrapper}>
@@ -89,9 +94,11 @@ const EcosystemScreen = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={{flex: 1}} onPress={() => onPressBlogs('otc')}>
+      <TouchableOpacity
+        style={styles.scene}
+        onPress={() => onPressBlogs('coin_dealer')}>
         <Image
-          style={{width: deviceWidth, height: '100%'}}
+          style={styles.fullImage}
           source={require('../../assets/otc.jpg')}
         />
         <View style={styles.textWrapper}>
@@ -111,9 +118,17 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
   },
-  image: {
-    width: 100,
-    height: 100,
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  halfImage: {
+    width: deviceWidth / 2,
+    height: '100%',
+  },
+  fullImage: {
+    width: deviceWidth,
+    height: '100%',
   },
   textWrapper: {
     elevation: 1,
