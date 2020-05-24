@@ -504,11 +504,11 @@ PODS:
   - RNCMaskedView (0.1.6):
     - React
   - RNFBApp (6.4.0):
-    - Firebase/Core (~> 6.13.0)
+    - Firebase/Core (= 6.13.0)
     - React
   - RNFBFirestore (6.4.0):
-    - Firebase/Core (~> 6.13.0)
-    - Firebase/Firestore (~> 6.13.0)
+    - Firebase/Core (= 6.13.0)
+    - Firebase/Firestore (= 6.13.0)
     - React
     - RNFBApp
   - RNGestureHandler (1.6.1):
@@ -738,8 +738,8 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
-  RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
-  RNFBFirestore: 69e59e5266927857fa3629715111ee65f4de1cd0
+  RNFBApp: 34e6ee8f51167cd427e8e3eaf1b6e03572d5f9e6
+  RNFBFirestore: e5b7f27557ce0089778bb4a3af84c224065e446d
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
@@ -749,6 +749,6 @@ SPEC CHECKSUMS:
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 085b25348b7c03e6b6b3d0b6f440af653577d4af
+PODFILE CHECKSUM: 4f8d7d04addf1c50f23c3cc8d5f6ba36024f0efa
 
 COCOAPODS: 1.9.1
