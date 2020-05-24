@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Alert, ScrollView, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Input, Text} from 'react-native-elements';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import RNPickerSelect from 'react-native-picker-select';
-import {StackActions} from '@react-navigation/native';
 import {
   transferEth,
   transferTrx,
@@ -15,7 +14,16 @@ import {
   transferUsdt,
 } from '../../services/wallet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import TouchID from 'react-native-touch-id';
 import {colors} from '../../styles';
+
+export const checkTouchSupport = async () => {
+  try {
+    return await TouchID.isSupported({unifiedErrors: true});
+  } catch (err) {
+    return undefined;
+  }
+};
 
 const SendScreen = ({
   navigation,
@@ -37,14 +45,31 @@ const SendScreen = ({
   const [pending, setPending] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  const onCheckTransaction = () => {
+  const onCheckTransaction = async () => {
     if (receiver === '' || amount === '') {
       Alert.alert(
         'Error',
         'Something went wrong. Please check your input data.',
       );
     } else if (pin !== pinCode) {
-      Alert.alert('Error', 'PinCode Error.');
+      try {
+        const deviceTouchType = await checkTouchSupport();
+        if (deviceTouchType) {
+          const optionalConfig = {
+            title: 'Authentication Required', // Android
+            color: '#e00606', // Android,
+            fallbackLabel: '', // iOS (if empty, then label is hidden)
+          };
+          const result = await TouchID.authenticate('', optionalConfig);
+          if (result) {
+            pendingMessage();
+          }
+        } else {
+          Alert.alert('Error', 'Authentication Error.');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Authentication Error.');
+      }
     } else if (
       coin === 'ETH' ||
       coin === 'TRX' ||
@@ -141,7 +166,7 @@ const SendScreen = ({
       .collection('user')
       .doc('txdata')
       .update({
-        [`tx.${coin}.${txid}`]: note,
+        [`tx.${coin || 'error'}.${txid || 'error'}`]: note,
       })
       .then(() => {
         console.log('User added!');
