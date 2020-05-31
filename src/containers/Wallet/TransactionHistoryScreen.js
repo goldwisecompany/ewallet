@@ -207,7 +207,6 @@ const TransactionHistoryScreen = ({
             const {data} = await res.json();
             allData = data;
           } catch (error) {
-            console.log('qq', error);
             throw new Error(error);
           }
           if (allData !== null) {
