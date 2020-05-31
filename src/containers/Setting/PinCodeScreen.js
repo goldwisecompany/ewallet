@@ -18,14 +18,14 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
   const checkPin = pin => {
     if (pin !== pinCode) {
       Alert.alert('Error', 'Incorrect password');
-    } else if (route && route.params && route.params.currentIndex) {
+    } else if (route && route.params && route.params.resetPinCode) {
+      navigation.dispatch(StackActions.replace('ResetPinCode'));
+    } else {
       navigation.dispatch(
         StackActions.replace('RecoveryPhrase', {
           phrase: phrase[route.params.currentIndex] || phrase[current],
         }),
       );
-    } else if (route && route.params && route.params.resetPinCode) {
-      navigation.dispatch(StackActions.replace('ResetPinCode'));
     }
   };
 
