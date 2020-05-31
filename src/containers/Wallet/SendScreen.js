@@ -158,7 +158,10 @@ const SendScreen = ({
       }
       Alert.alert('Transaction Success', 'The transaction has been Confirmed.');
     } catch (error) {
-      Alert.alert('Transaction error', error.message);
+      Alert.alert(
+        'Transaction error',
+        'Something Went Wrong, Please Check Your Input Data.',
+      );
     }
 
     setPending(false);

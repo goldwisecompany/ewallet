@@ -12,6 +12,12 @@ const SettingScreen = ({navigation, currency}) => {
       onPress: () => navigation.navigate('WalletManagement'),
     },
     {
+      name: 'Reset PinCode',
+      icon: 'https',
+      chevron: true,
+      onPress: () => navigation.navigate('PinCode', {resetPinCode: true}),
+    },
+    {
       name: 'Currency',
       icon: 'attach-money',
       rightTitle: currency,

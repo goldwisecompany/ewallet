@@ -36,6 +36,7 @@ import TermsofServiceScreen from './containers/Setting/TermsofServiceScreen';
 import PrivacyPolicyScreen from './containers/Setting/PrivacyPolicyScreen';
 import FaqScreen from './containers/Setting/FaqScreen';
 import AboutUsScreen from './containers/Setting/AboutUsScreen';
+import ResetPinCodeScreen from './containers/Setting/ResetPinCode';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/FontAwesome5';
@@ -156,6 +157,11 @@ const SettingStack = () => (
       name="AboutUs"
       component={AboutUsScreen}
       options={setStackOptions('About Us')}
+    />
+    <Stack.Screen
+      name="ResetPinCode"
+      component={ResetPinCodeScreen}
+      options={setStackOptions('Reset Password')}
     />
   </Stack.Navigator>
 );

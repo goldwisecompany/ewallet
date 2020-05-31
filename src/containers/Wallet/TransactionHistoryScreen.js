@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
 import {colors} from '../../styles';
 import firestore from '@react-native-firebase/firestore';
+import {delay} from '../../utils/index';
 import {web3, tronWeb, bitbox} from '../../services/wallet';
 
 const BCH = require('../../assets/BCH.png');
@@ -33,6 +34,7 @@ const TransactionHistoryScreen = ({
   const [isInit, setIsInit] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [transactionList, setTransactionList] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const buttonList = [
     {
@@ -65,6 +67,7 @@ const TransactionHistoryScreen = ({
   };
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchTransaction = async () => {
       let mappingData = {};
       try {
@@ -86,6 +89,7 @@ const TransactionHistoryScreen = ({
       // });
       const mappingHash =
         mappingData && mappingData.tx && mappingData.tx[route.params.coin];
+      await delay(5000);
       try {
         if (route.params.coin === 'ETH') {
           const response = await fetch(
@@ -108,7 +112,9 @@ const TransactionHistoryScreen = ({
               }))
               .filter((_, index) => index < 30),
           );
-          setTransactionList(newList.reverse());
+          if (isSubscribed) {
+            setTransactionList(newList.reverse());
+          }
         } else if (route.params.coin === 'BTC') {
           const response = await fetch(
             `https://chain.api.btc.com/v3/address/${
@@ -122,16 +128,18 @@ const TransactionHistoryScreen = ({
               const newList = list
                 .filter((item, index) => index < 10)
                 .map(i => {
-                  const findInputIndex = i.inputs.findIndex(
-                    inputItem =>
+                  console.log(i, 'i');
+                  const findInputIndex = i.inputs.findIndex(inputItem => {
+                    return (
                       inputItem.prev_addresses[0] ===
-                      myWallets[current].BCH.address,
-                  );
+                      myWallets[current].BTC.address
+                    );
+                  });
 
                   const findOutputIndex = i.outputs.findIndex(
                     outputItem =>
                       outputItem.addresses[0] ===
-                      myWallets[current].BCH.address,
+                      myWallets[current].BTC.address,
                   );
 
                   let finalValue = 0;
@@ -154,7 +162,9 @@ const TransactionHistoryScreen = ({
                     note: (mappingHash && mappingHash[i.hash]) || '',
                   };
                 });
-              setTransactionList(newList);
+              if (isSubscribed) {
+                setTransactionList(newList);
+              }
             }
           }
         } else if (route.params.coin === 'TRX') {
@@ -182,31 +192,36 @@ const TransactionHistoryScreen = ({
                 note: (mappingHash && mappingHash[item.hash]) || '',
               })),
           );
-          setTransactionList(txsList);
+          if (isSubscribed) {
+            setTransactionList(txsList);
+          }
         } else if (route.params.coin === 'BCH') {
           const legacyAddress = bitbox.Address.toLegacyAddress(
             myWallets[current].BCH.address,
           );
-          const res = await fetch(
-            `https://bch-chain.api.btc.com/v3/address/${legacyAddress}/tx`,
-          );
-          const {data} = await res.json();
-          if (data !== null) {
-            const {list} = data;
+          let allData = {};
+          try {
+            const res = await fetch(
+              `https://bch-chain.api.btc.com/v3/address/${legacyAddress}/tx`,
+            );
+            const {data} = await res.json();
+            allData = data;
+          } catch (error) {
+            console.log('qq', error);
+            throw new Error(error);
+          }
+          if (allData !== null) {
+            const {list} = allData;
             if (list.length > 0) {
               const newList = list
                 .filter((item, index) => index < 10)
-                .map(i => {
+                .map((i, index) => {
                   const findInputIndex = i.inputs.findIndex(
-                    inputItem =>
-                      inputItem.prev_addresses[0] ===
-                      myWallets[current].BCH.address,
+                    inputItem => inputItem.prev_addresses[0] === legacyAddress,
                   );
 
                   const findOutputIndex = i.outputs.findIndex(
-                    outputItem =>
-                      outputItem.addresses[0] ===
-                      myWallets[current].BCH.address,
+                    outputItem => outputItem.addresses[0] === legacyAddress,
                   );
 
                   let finalValue = 0;
@@ -218,7 +233,6 @@ const TransactionHistoryScreen = ({
                     ((i.inputs[findInputIndex] &&
                       i.inputs[findInputIndex].prev_value) ||
                       0);
-
                   return {
                     ...i,
                     date: new Date(i.block_time * 1000).toLocaleString(),
@@ -229,7 +243,9 @@ const TransactionHistoryScreen = ({
                     note: (mappingHash && mappingHash[i.hash]) || '',
                   };
                 });
-              setTransactionList(newList);
+              if (isSubscribed) {
+                setTransactionList(newList);
+              }
             }
           }
         } else if (route.params.coin === 'PRN') {
@@ -255,7 +271,9 @@ const TransactionHistoryScreen = ({
                 ).toFixed(4),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
-            setTransactionList(newList);
+            if (isSubscribed) {
+              setTransactionList(newList);
+            }
           }
         } else if (route.params.coin === 'USDT') {
           const address = myWallets[current].USDT.address;
@@ -277,16 +295,21 @@ const TransactionHistoryScreen = ({
                 value: web3.utils.fromWei(tx.value, 'mwei'),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
-            setTransactionList(newList);
+            if (isSubscribed) {
+              setTransactionList(newList);
+            }
           }
         }
       } catch (error) {
-        console.log(error);
+        setIsError(true);
       }
-      setRefreshing(false);
-      setIsInit(false);
+      if (isSubscribed) {
+        setRefreshing(false);
+        setIsInit(false);
+      }
     };
     fetchTransaction();
+    return () => (isSubscribed = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshing]);
 
@@ -359,10 +382,18 @@ const TransactionHistoryScreen = ({
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <ActivityIndicator size="large" color="gray" />
           </View>
-        ) : transactionList.length === 0 ? (
+        ) : transactionList.length === 0 ? ( // isError going to implement
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>No data.</Text>
+            <Button
+              title="Try Again Later"
+              buttonStyle={styles.buttonStyle2}
+              onPress={() => {
+                setIsError(false);
+                setRefreshing(true);
+                setIsInit(true);
+              }}
+            />
           </View>
         ) : (
           <FlatList
@@ -409,6 +440,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: 100,
     margin: 10,
+  },
+  buttonStyle2: {
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    backgroundColor: colors.mainLight,
   },
   titleStyle: {
     color: colors.mainLight,

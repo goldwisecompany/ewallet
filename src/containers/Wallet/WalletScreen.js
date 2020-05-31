@@ -62,14 +62,14 @@ const WalletScreen = ({
   });
 
   const [ratesList, setRatesList] = useState({
-    CNY: 1,
-    IDR: 1,
-    INR: 1,
-    JPY: 1,
-    KRW: 1,
-    MYR: 1,
-    SGD: 1,
-    TWD: 1,
+    CNY: 7.1,
+    IDR: 14739,
+    INR: 75.6,
+    JPY: 108,
+    KRW: 1231,
+    MYR: 4.3,
+    SGD: 1.4,
+    TWD: 30,
     USD: 1,
   });
 
