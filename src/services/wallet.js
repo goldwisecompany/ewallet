@@ -359,7 +359,6 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
     // keypair
     let keyPair = bitbox.HDNode.toKeyPair(hdNode);
     // empty redeemScript variable
-    console.log(keyPair, 'keypair');
     let redeemScript;
     // sign w/ keyPair
     transactionBuilder.sign(
@@ -370,7 +369,6 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
       amountInSatoshi,
       transactionBuilder.signatureAlgorithms.SCHNORR,
     );
-    console.log(utxo, 'utxo');
     const tx = transactionBuilder.build();
     const hex = tx.toHex();
     // sendRawTransaction to running BCH node
@@ -468,7 +466,7 @@ export const transferPrn = async (receiver, amount, sender, privateKey) => {
 
 export const transferUsdt = async (receiver, amount, sender, privateKey) => {
   const inputData0 = receiver.substring(2).padStart(64, '0');
-  const inputData1 = bnToHex(bitbox.BitcoinCash.toSatoshi(amount)).padStart(
+  const inputData1 = bnToHex(web3.utils.toWei(amount, 'mwei')).padStart(
     64,
     '0',
   );
