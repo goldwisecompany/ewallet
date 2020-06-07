@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, ScrollView, View, StyleSheet} from 'react-native';
+import {Alert, ScrollView, View, StyleSheet, Switch} from 'react-native';
 import {connect} from 'react-redux';
 import {Icon, Button, Input, Text} from 'react-native-elements';
 import firebase from '@react-native-firebase/app';
@@ -15,6 +15,7 @@ import {
 } from '../../services/wallet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchID from 'react-native-touch-id';
+import ReactNativeBiometrics from 'react-native-biometrics';
 import {colors} from '../../styles';
 
 export const checkTouchSupport = async () => {
@@ -44,6 +45,8 @@ const SendScreen = ({
   const [pin, setPin] = useState('');
   const [pending, setPending] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [switchEnabled, setSwitchEnabled] = useState(false);
+  const toggleSwitch = () => setSwitchEnabled(previousState => !previousState);
 
   const onCheckTransaction = async () => {
     if (receiver === '' || amount === '') {
@@ -51,22 +54,60 @@ const SendScreen = ({
         'Error',
         'Something went wrong. Please check your input data.',
       );
-    } else if (pin !== pinCode) {
+    } else if (switchEnabled) {
       try {
-        const deviceTouchType = await checkTouchSupport();
-        if (deviceTouchType) {
-          const optionalConfig = {
-            title: 'Authentication Required', // Android
-            color: '#e00606', // Android,
-            fallbackLabel: '', // iOS (if empty, then label is hidden)
-          };
-          const result = await TouchID.authenticate('', optionalConfig);
-          if (result) {
-            pendingMessage();
+        // const deviceTouchType = await checkTouchSupport();
+        ReactNativeBiometrics.isSensorAvailable().then(resultObject => {
+          const {available, biometryType} = resultObject;
+          if (available && biometryType === ReactNativeBiometrics.TouchID) {
+            ReactNativeBiometrics.simplePrompt({
+              promptMessage: 'Confirm fingerprint',
+            })
+              .then(resultObject => {
+                const {success} = resultObject;
+                if (success) {
+                  pendingMessage();
+                }
+              })
+              .catch(() => {
+                Alert.alert('Error', 'Authentication Error.');
+              });
+          } else if (
+            available &&
+            biometryType === ReactNativeBiometrics.FaceID
+          ) {
+            ReactNativeBiometrics.simplePrompt({
+              promptMessage: 'Confirm FaceID',
+            })
+              .then(resultObject => {
+                const {success} = resultObject;
+                if (success) {
+                  pendingMessage();
+                }
+              })
+              .catch(() => {
+                Alert.alert('Error', 'Authentication Error.');
+              });
+          } else if (
+            available &&
+            biometryType === ReactNativeBiometrics.Biometrics
+          ) {
+            ReactNativeBiometrics.simplePrompt({
+              promptMessage: 'Confirm Biometrics',
+            })
+              .then(resultObject => {
+                const {success} = resultObject;
+                if (success) {
+                  pendingMessage();
+                }
+              })
+              .catch(() => {
+                Alert.alert('Error', 'Authentication Error.');
+              });
+          } else {
+            Alert.alert('Error', 'Authentication Error.');
           }
-        } else {
-          Alert.alert('Error', 'Authentication Error.');
-        }
+        });
       } catch (error) {
         Alert.alert('Error', 'Authentication Error.');
       }
@@ -75,7 +116,8 @@ const SendScreen = ({
       coin === 'TRX' ||
       coin === 'BTC' ||
       coin === 'PRN' ||
-      coin === 'BCH'
+      coin === 'BCH' ||
+      coin === 'USDT'
     ) {
       Alert.alert(
         'Transfer',
@@ -94,18 +136,19 @@ const SendScreen = ({
 
   const pendingMessage = () => {
     setDisabled(true);
-    Alert.alert('Transaction Sent!', 'The transaction has been sent.', [
-      {text: 'OK', onPress: () => transfer()},
-    ]);
+    if (pin !== pinCode && !switchEnabled) {
+      Alert.alert('Error', 'Incorrect password', [
+        {text: 'OK', onPress: () => setDisabled(false)},
+      ]);
+    } else {
+      Alert.alert('Transaction Sent!', 'The transaction has been sent.', [
+        {text: 'OK', onPress: () => transfer()},
+      ]);
+    }
   };
 
   const transfer = async () => {
     setPending(true);
-    const timer = setTimeout(() => {
-      setDisabled(false);
-      navigation.popToTop();
-      clearTimeout(timer);
-    }, 2000);
     let txid = '';
     try {
       if (coin === 'ETH') {
@@ -156,12 +199,18 @@ const SendScreen = ({
         );
         txid = receipt.transactionHash;
       }
+      const timer = setTimeout(() => {
+        setDisabled(false);
+        navigation.popToTop();
+        clearTimeout(timer);
+      }, 3000);
       Alert.alert('Transaction Success', 'The transaction has been Confirmed.');
     } catch (error) {
       Alert.alert(
         'Transaction error',
         'Something Went Wrong, Please Check Your Input Data.',
       );
+      setDisabled(false);
     }
 
     setPending(false);
@@ -171,9 +220,7 @@ const SendScreen = ({
       .update({
         [`tx.${coin || 'error'}.${txid || 'error'}`]: note,
       })
-      .then(() => {
-        console.log('User added!');
-      })
+      .then(() => {})
       .catch(console.log);
   };
 
@@ -258,6 +305,27 @@ const SendScreen = ({
           onChangeText={code => setPin(code)}
           maxLength={14}
         />
+        <View
+          style={{
+            height: 50,
+            width: '80%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: 20,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}>
+            <Icon name="fingerprint" size={25} color="gray" />
+            <Text>Biometric Authentication</Text>
+          </View>
+          <Switch value={switchEnabled} onValueChange={toggleSwitch} />
+        </View>
         <Button
           title="Send"
           buttonStyle={{

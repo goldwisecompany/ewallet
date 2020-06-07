@@ -339,12 +339,13 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
   try {
     // Utxo
     const utxo = await bitbox.Address.utxo(sender);
+    console.log(utxo, 'utxo');
     let balance = 0;
     utxo.utxos.every((item, index) => {
       balance += item.satoshis;
-      transactionBuilder.addInput(item.txid, index);
+      transactionBuilder.addInput(item.txid, item.vout);
     });
-
+    console.log(transactionBuilder, 'transactionBuilder');
     const amountInSatoshi = bitbox.BitcoinCash.toSatoshi(amount);
     const byteCount = bitbox.BitcoinCash.getByteCount({P2PKH: 1}, {P2PKH: 2});
     const sendAmount = amountInSatoshi - byteCount;
@@ -352,6 +353,7 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
     // Change
     transactionBuilder.addOutput(sender, balance - sendAmount - byteCount);
 
+    transactionBuilder.setLockTime(50000);
     // Sign
     const seedBuffer = bitbox.Mnemonic.toSeed(mnemonic);
     // create HDNode from seed buffer
@@ -367,19 +369,19 @@ export const transferBch = async (receiver, amount, sender, mnemonic) => {
       redeemScript,
       transactionBuilder.hashTypes.SIGHASH_ALL,
       amountInSatoshi,
-      transactionBuilder.signatureAlgorithms.SCHNORR,
+      // transactionBuilder.signatureAlgorithms.SCHNORR,
     );
     const tx = transactionBuilder.build();
     const hex = tx.toHex();
     // sendRawTransaction to running BCH node
-    bitbox.RawTransactions.sendRawTransaction(hex).then(
-      result => {
-        return result;
-      },
-      err => {
-        throw new Error(err);
-      },
-    );
+    try {
+      const sendRawTransaction = await bitbox.RawTransactions.sendRawTransaction(
+        hex,
+      );
+      return sendRawTransaction.txid || sendRawTransaction.hash;
+    } catch (error) {
+      throw new Error(error);
+    }
   } catch (error) {
     throw new Error(error);
   }

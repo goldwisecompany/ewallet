@@ -136,7 +136,7 @@ const SettingStack = () => (
     <Stack.Screen
       name="PinCode"
       component={PinCodeScreen}
-      options={setStackOptions('Input PinCode')}
+      options={setStackOptions('Input Password')}
     />
     <Stack.Screen
       name="TermsofService"

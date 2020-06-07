@@ -20,6 +20,7 @@ import {web3, tronWeb, erc20Abi, bitbox} from '../../services/wallet';
 import {colors, fonts} from '../../styles';
 import {getPrice} from '../../services/api';
 import {updateBlogs, registerUuid} from '../../actions/index';
+import {floor10} from '../../services/math';
 
 const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
@@ -309,7 +310,9 @@ const WalletScreen = ({
       leftIcon={<Image style={styles.icon} source={renderImage(item)} />}
       rightTitle={
         <View style={styles.rightTitleContainer}>
-          <Text style={styles.rightTitle}>{`${balances[item]} ${item}`}</Text>
+          <Text style={styles.rightTitle}>
+            {`${floor10(balances[item], -8)} ${item}`}
+          </Text>
           <Text style={styles.rightTitle}>
             {`${toLocaleCurrency(priceList[item])} ${currency}`}
           </Text>

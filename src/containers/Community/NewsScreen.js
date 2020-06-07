@@ -73,7 +73,8 @@ const NewsScreen = ({navigation}) => {
         {
           title: 'DeBank',
           url: 'https://debank.com/',
-          image: 'https://debank.com/static/media/new-addr.12e06acf.png',
+          image:
+            'https://theme.zdassets.com/theme_assets/9347551/ab92fd402a6d803c4e7752b6ca6e48f6749ae322.png',
           subtitle:
             "DeBank's mission is to build a bridge between users and DeFi tech.",
         },

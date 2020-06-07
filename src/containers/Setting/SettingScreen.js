@@ -1,5 +1,5 @@
-import React from 'react';
-import {FlatList, View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {FlatList, View, StyleSheet, Switch} from 'react-native';
 import {connect} from 'react-redux';
 import {ListItem} from 'react-native-elements';
 
@@ -12,7 +12,7 @@ const SettingScreen = ({navigation, currency}) => {
       onPress: () => navigation.navigate('WalletManagement'),
     },
     {
-      name: 'Reset PinCode',
+      name: 'Reset Password',
       icon: 'https',
       chevron: true,
       onPress: () => navigation.navigate('PinCode', {resetPinCode: true}),

@@ -138,11 +138,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 25,
+    fontSize: 14,
     marginLeft: 10,
     elevation: 2,
     zIndex: 2,
     color: 'white',
+    fontWeight: '600',
   },
 });
 
