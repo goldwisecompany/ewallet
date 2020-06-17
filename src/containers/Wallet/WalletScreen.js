@@ -209,7 +209,8 @@ const WalletScreen = ({
       // TODO: Migrate to mainnet
       const prnTokenContract = new web3.eth.Contract(
         erc20Abi,
-        '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a', // Ropsten
+        '0x222258845094017fEB89efBaf2776e1F19951dfd', // Mainnet
+        // '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a', // Ropsten
       );
 
       let prnbalance = 0;

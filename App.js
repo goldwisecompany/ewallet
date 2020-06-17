@@ -5,7 +5,6 @@
  * @format
  * @flow
  */
-import 'react-native-gesture-handler';
 
 import React from 'react';
 import Router from './src/Router';

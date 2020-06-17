@@ -446,16 +446,13 @@ export const transferBtc = async (receiver, amount, sender, privateKey) => {
 
 export const transferPrn = async (receiver, amount, sender, privateKey) => {
   const inputData0 = receiver.substring(2).padStart(64, '0');
-  const inputData1 = bnToHex(bitbox.BitcoinCash.toSatoshi(amount)).padStart(
-    64,
-    '0',
-  );
+  const inputData1 = bnToHex(web3.utils.toWei(amount, 'wei')).padStart(64, '0');
   const txData = `0xa9059cbb${inputData0}${inputData1}`.toLowerCase();
 
   try {
     const receipt = await web3.eth.sendTransaction({
       from: sender,
-      to: '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a',
+      to: '0x222258845094017fEB89efBaf2776e1F19951dfd',
       value: '0',
       gas: 90000,
       data: txData,
