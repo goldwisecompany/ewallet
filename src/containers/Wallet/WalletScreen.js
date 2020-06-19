@@ -402,7 +402,7 @@ const WalletScreen = ({
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={keyExtractor}
-          data={['PRN', 'BTC', 'BCH', 'ETH', 'TRX', 'USDT']}
+          data={['PRN', 'BTC', 'ETH', 'TRX', 'USDT']}
           renderItem={renderItem}
           scrollEnabled={true}
         />

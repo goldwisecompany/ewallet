@@ -40,7 +40,6 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
           items={[
             {label: 'PRN', value: 'PRN'},
             {label: 'BTC', value: 'BTC'},
-            {label: 'BCH', value: 'BCH'},
             {label: 'ETH', value: 'ETH'},
             {label: 'TRX', value: 'TRX'},
             {label: 'USDT', value: 'USDT'},
