@@ -236,9 +236,7 @@ const WalletScreen = ({
         btcSatoshiBalance,
       ).toString();
 
-      const prnBalance = bitbox.BitcoinCash.toBitcoinCash(
-        prnbalance,
-      ).toString();
+      const prnBalance = web3.utils.fromWei(prnbalance || '0', 'wei');
 
       const usdtBalance = web3.utils.fromWei(usdtbalance || '0', 'Mwei');
 
