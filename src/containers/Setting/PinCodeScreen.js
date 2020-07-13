@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import {Button, Input} from 'react-native-elements';
 import {StackActions} from '@react-navigation/native';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
   const [code, setCode] = useState();
@@ -17,7 +18,10 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
 
   const checkPin = pin => {
     if (pin !== pinCode) {
-      Alert.alert('Error', 'Incorrect password');
+      Alert.alert(
+        Locale['TEXT__GENERAL_ERROR'],
+        Locale['MSG_INCORRECT_PASSWORD'],
+      );
     } else if (route && route.params && route.params.resetPinCode) {
       navigation.dispatch(StackActions.replace('ResetPinCode'));
     } else {
@@ -41,12 +45,12 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
           leftIcon={{type: 'ionicon', name: 'ios-lock'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={text => setCode(text)}
-          placeholder="Check Password"
+          placeholder={Locale['TEXT__CHECK_PASSWORD']}
           autoFocus
         />
         <View style={{height: 100}} />
         <Button
-          title="Check"
+          title={Locale['TEXT__CHECK']}
           buttonStyle={styles.buttonStyle}
           onPress={() => checkPin(code)}
         />

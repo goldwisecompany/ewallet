@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import {Button, Input} from 'react-native-elements';
 import {updateData} from '../../actions/index';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const ResetPinCodeScreen = ({
   navigation,
@@ -45,7 +46,9 @@ const ResetPinCodeScreen = ({
         <Input
           containerStyle={{margin: 10}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Password (6 ~ 14 characters)"
+          placeholder={`${Locale['TEXT_PASSWORD']} (${
+            Locale['HINT__CREATE_PASSWORD']
+          })`}
           leftIcon={{type: 'ionicon', name: 'ios-lock'}}
           leftIconContainerStyle={styles.leftIconContainerStyle}
           onChangeText={pin => setInputPinCode(pin)}

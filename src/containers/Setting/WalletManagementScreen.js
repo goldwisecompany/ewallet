@@ -4,6 +4,7 @@ import {Alert, FlatList, View, ScrollView, StyleSheet} from 'react-native';
 import {Button, CheckBox, ListItem, Text} from 'react-native-elements';
 import {changeWallet, recreateWallet} from '../../actions/index';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const WalletManagementScreen = ({
   navigation,
@@ -33,7 +34,7 @@ const WalletManagementScreen = ({
           checked={index === current}
           onPress={() => {
             changeWalletConnect({index});
-            Alert.alert('', 'Wallet Changed!');
+            Alert.alert('', `${Locale['TEXT__WALLET_CHANGED']}!`);
           }}
         />
       </View>
@@ -46,7 +47,7 @@ const WalletManagementScreen = ({
         scrollEnabled={false}
       />
       <Button
-        title="Show Phrases"
+        title={Locale['TEXT__SHOW_PARASES']}
         containerStyle={{
           justifyContent: 'center',
           alignItems: 'flex-start',
@@ -70,7 +71,7 @@ const WalletManagementScreen = ({
     <View style={styles.container}>
       <View style={styles.addWalletWrapper}>
         <Button
-          title="Add Wallet"
+          title={Locale['TEXT__ADD_WALLET']}
           type="solid"
           containerStyle={styles.addWalletContainerStyle}
           buttonStyle={styles.addWalletButtonStyle}

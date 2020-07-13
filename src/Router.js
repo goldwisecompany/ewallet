@@ -4,6 +4,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+// Locale
+import Locale from 'ewallet/src/locales';
+
 // Launch
 import SplashScreen from './containers/Launch/SplashScreen';
 import LaunchScreen from './containers/Launch/LaunchScreen';
@@ -61,22 +64,22 @@ const WalletStack = ({navigation, route}) => (
     <Stack.Screen
       name="Scanner"
       component={ScannerScreen}
-      options={setStackOptions('Scanner')}
+      options={setStackOptions(Locale['TEXT__SCANNER'])}
     />
     <Stack.Screen
       name="Send"
       component={SendScreen}
-      options={setStackOptions('Send')}
+      options={setStackOptions(Locale['TEXT__SEND'])}
     />
     <Stack.Screen
       name="Receive"
       component={ReceiveScreen}
-      options={setStackOptions('Receive')}
+      options={setStackOptions(Locale['TEXT__RECEIVE'])}
     />
     <Stack.Screen
       name="TransactionHistory"
       component={TransactionHistoryScreen}
-      options={setStackOptions('Transaction History')}
+      options={setStackOptions(Locale['TEXT__TRANSACTION_HISTORY'])}
     />
   </Stack.Navigator>
 );
@@ -86,7 +89,7 @@ const CommunityStack = () => (
     <Stack.Screen
       name="News"
       component={NewsScreen}
-      options={setStackOptions('News')}
+      options={setStackOptions(Locale['TEXT__NEWS'])}
     />
   </Stack.Navigator>
 );
@@ -96,17 +99,19 @@ const EcosystemStack = () => (
     <Stack.Screen
       name="Ecosystem"
       component={EcosystemScreen}
-      options={setStackOptions('Ecosystem')}
+      options={setStackOptions(Locale['TEXT__ECOSYSTEM'])}
     />
     <Stack.Screen
       name="EcoBlogs"
       component={EcoBlogsScreen}
-      options={setStackOptions('Ecosystem Blogs')}
+      options={setStackOptions(
+        `${Locale['TEXT__ECOSYSTEM']} ${Locale['TEXT__BLOGS']}`,
+      )}
     />
     <Stack.Screen
       name="EcoDetail"
       component={EcoDetailScreen}
-      options={setStackOptions('Blog')}
+      options={setStackOptions(Locale['TEXT__BLOGS'])}
     />
   </Stack.Navigator>
 );
@@ -116,22 +121,22 @@ const SettingStack = () => (
     <Stack.Screen
       name="Setting"
       component={SettingScreen}
-      options={setStackOptions('Setting')}
+      options={setStackOptions(Locale['TEXT__SETTING'])}
     />
     <Stack.Screen
       name="WalletManagement"
       component={WalletManagementScreen}
-      options={setStackOptions('Wallet Management')}
+      options={setStackOptions(Locale['TEXT__WALLET_MANAGEMENT'])}
     />
     <Stack.Screen
       name="Currency"
       component={CurrencyScreen}
-      options={setStackOptions('Currency')}
+      options={setStackOptions(Locale['TEXT__CURRENCY'])}
     />
     <Stack.Screen
       name="RecoveryPhrase"
       component={RecoveryPhraseScreen}
-      options={setStackOptions('Recovery Phrase')}
+      options={setStackOptions(Locale['TEXT__RECOVERY_PHRASE'])}
     />
     <Stack.Screen
       name="PinCode"
@@ -141,27 +146,27 @@ const SettingStack = () => (
     <Stack.Screen
       name="TermsofService"
       component={TermsofServiceScreen}
-      options={setStackOptions('Terms of Service')}
+      options={setStackOptions(Locale['TEXT__TERMS_OF_SERVICE'])}
     />
     <Stack.Screen
       name="PrivacyPolicy"
       component={PrivacyPolicyScreen}
-      options={setStackOptions('Privacy Policy')}
+      options={setStackOptions(Locale['TEXT__PRIVACY_POLICY'])}
     />
     <Stack.Screen
       name="Faq"
       component={FaqScreen}
-      options={setStackOptions('FAQ')}
+      options={setStackOptions(Locale['TEXT__FAQ'])}
     />
     <Stack.Screen
       name="AboutUs"
       component={AboutUsScreen}
-      options={setStackOptions('About Us')}
+      options={setStackOptions(Locale['TEXT__ABOUT_US'])}
     />
     <Stack.Screen
       name="ResetPinCode"
       component={ResetPinCodeScreen}
-      options={setStackOptions('Reset Password')}
+      options={setStackOptions()}
     />
   </Stack.Navigator>
 );
@@ -245,7 +250,7 @@ const Router = props => {
         <LaunchStack.Screen
           name="ImportWallet"
           component={ImportWalletScreen}
-          options={setStackOptions('Import Wallet')}
+          options={setStackOptions(Locale['TEXT__WALLET_IMPORT'])}
         />
         <LaunchStack.Screen
           name="Loading"

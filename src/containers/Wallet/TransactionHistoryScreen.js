@@ -13,6 +13,7 @@ import {colors} from '../../styles';
 import firestore from '@react-native-firebase/firestore';
 import {delay} from '../../utils/index';
 import {web3, tronWeb, bitbox} from '../../services/wallet';
+import Locale from 'ewallet/src/locales';
 
 const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
@@ -34,21 +35,22 @@ const TransactionHistoryScreen = ({
   const [isInit, setIsInit] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [transactionList, setTransactionList] = useState([]);
-  const [isError, setIsError] = useState(false);
+  const [status, setStatus] = useState('init'); // init, fetching, again, done, error
+  const [count, setCount] = useState(0);
 
   const buttonList = [
     {
-      title: 'Send',
+      title: Locale['TEXT__SEND'],
       icon: 'arrow-upward',
       onPress: () => navigation.navigate('Send', {coin: coin}),
     },
     {
-      title: 'Receive',
+      title: Locale['TEXT__RECEIVE'],
       icon: 'arrow-downward',
       onPress: () => navigation.navigate('Receive', {coin: coin}),
     },
     {
-      title: 'Scan',
+      title: Locale['TEXT__SCAN'],
       icon: 'crop-free',
       onPress: () => navigation.navigate('Scanner'),
     },
@@ -87,6 +89,11 @@ const TransactionHistoryScreen = ({
       //     console.log('User data: ', documentSnapshot.data());
       //   }
       // });
+      if (count >= 1) {
+        setStatus('again');
+      } else {
+        setStatus('fetching');
+      }
       const mappingHash =
         mappingData && mappingData.tx && mappingData.tx[route.params.coin];
       await delay(5000);
@@ -251,13 +258,13 @@ const TransactionHistoryScreen = ({
           // TODO: Migration to mainnet
           const address = myWallets[current].PRN.address;
           const res = await fetch(
-            `https://api-ropsten.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
+            `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
           const data = await res.json();
           const {result} = data;
           if (result.length > 0) {
             const newList = result
-              .filter(item => item.tokenName === 'prnc') // TODO: change name
+              .filter(item => item.tokenName === 'PRN Token') // TODO: change name
               .map(tx => ({
                 ...tx,
                 status:
@@ -265,12 +272,11 @@ const TransactionHistoryScreen = ({
                     ? 'Send'
                     : 'Receive',
                 date: new Date(tx.timeStamp * 1000).toLocaleString(),
-                value: bitbox.BitcoinCash.toBitcoinCash(
-                  Number(tx.value),
-                ).toFixed(4),
+                value: web3.utils.fromWei(tx.value, 'wei'),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
               }));
             if (isSubscribed) {
+              console.log(newList, 'newList');
               setTransactionList(newList);
             }
           }
@@ -305,12 +311,14 @@ const TransactionHistoryScreen = ({
           }
         }
       } catch (error) {
-        setIsError(true);
+        setStatus('error');
       }
       if (isSubscribed) {
-        setRefreshing(false);
         setIsInit(false);
+        setStatus('done');
+        setRefreshing(false);
       }
+      setCount(prevCount => prevCount + 1);
     };
     fetchTransaction();
     return () => (isSubscribed = false);
@@ -321,6 +329,7 @@ const TransactionHistoryScreen = ({
 
   const onRefresh = () => {
     setRefreshing(true);
+    setStatus('again');
   };
 
   const renderItem = ({item}) => (
@@ -381,23 +390,28 @@ const TransactionHistoryScreen = ({
         ))}
       </View>
       <View style={styles.list}>
-        {isInit ? (
+        {console.log(status, 'status')}
+        {status === 'init' || status === 'fetching' ? (
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <ActivityIndicator size="large" color="gray" />
+            <ActivityIndicator size="large" color="black" />
           </View>
-        ) : transactionList.length === 0 ? ( // isError going to implement
+        ) : status === 'error' ? ( // isError going to implement
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Button
               title="Try Again Later"
               buttonStyle={styles.buttonStyle2}
               onPress={() => {
-                setIsError(false);
                 setRefreshing(true);
-                setIsInit(true);
+                setStatus('error');
               }}
             />
+          </View>
+        ) : status === 'done' && transactionList.length === 0 ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>{Locale['MSG__NO_DATA']}</Text>
           </View>
         ) : (
           <FlatList

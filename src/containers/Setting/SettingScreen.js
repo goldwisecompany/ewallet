@@ -2,54 +2,55 @@ import React, {useState} from 'react';
 import {FlatList, View, StyleSheet, Switch} from 'react-native';
 import {connect} from 'react-redux';
 import {ListItem} from 'react-native-elements';
+import Locale from 'ewallet/src/locales';
 
 const SettingScreen = ({navigation, currency}) => {
   const configList = [
     {
-      name: 'Wallet Management',
+      name: Locale['TEXT__WALLET_MANAGEMENT'],
       icon: 'account-balance-wallet',
       chevron: true,
       onPress: () => navigation.navigate('WalletManagement'),
     },
     {
-      name: 'Reset Password',
+      name: Locale['TEXT__RESET_PASSWORD'],
       icon: 'https',
       chevron: true,
       onPress: () => navigation.navigate('PinCode', {resetPinCode: true}),
     },
     {
-      name: 'Currency',
+      name: Locale['TEXT__CURRENCY'],
       icon: 'attach-money',
       rightTitle: currency,
       chevron: true,
       onPress: () => navigation.navigate('Currency'),
     },
     {
-      name: 'FAQ',
+      name: Locale['TEXT__FAQ'],
       icon: 'error',
       chevron: true,
       onPress: () => navigation.navigate('Faq'),
     },
     {
-      name: 'About us',
+      name: Locale['TEXT__ABOUT_US'],
       icon: 'people',
       chevron: true,
       onPress: () => navigation.navigate('AboutUs'),
     },
     {
-      name: 'Terms of Service',
+      name: Locale['TEXT__TERMS_OF_SERVICE'],
       icon: 'description',
       chevron: true,
       onPress: () => navigation.navigate('TermsofService'),
     },
     {
-      name: 'Privacy Policy',
+      name: Locale['TEXT__PRIVACY_POLICY'],
       icon: 'security',
       chevron: true,
       onPress: () => navigation.navigate('PrivacyPolicy'),
     },
     {
-      name: 'Version',
+      name: Locale['TEXT__APP_VERSION'],
       icon: 'class',
       rightTitle: '1.0.0',
       chevron: false,

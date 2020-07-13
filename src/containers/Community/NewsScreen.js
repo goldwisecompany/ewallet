@@ -14,6 +14,7 @@ import {createWallet} from '../../actions/index';
 import CryptoNewsApi from 'crypto-news-api';
 // import {WebView} from 'react-native-webview';
 import {TabBar, TabView} from 'react-native-tab-view';
+import Locale from 'ewallet/src/locales';
 const Api = new CryptoNewsApi('389b9cbc389a81600771e47dd922ab52');
 
 const initialLayout = {width: Dimensions.get('window').width};
@@ -26,9 +27,9 @@ const NewsScreen = ({navigation}) => {
   const [refreshingBlog, setRefreshingBlog] = useState(false);
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'News'},
-    {key: 'second', title: 'Blogs'},
-    {key: 'third', title: 'Investment'},
+    {key: 'first', title: Locale['TEXT__NEWS']},
+    {key: 'second', title: Locale['TEXT__BLOGS']},
+    {key: 'third', title: Locale['TEXT__INVESTMENT']},
   ]);
 
   const FirstRoute = () => (

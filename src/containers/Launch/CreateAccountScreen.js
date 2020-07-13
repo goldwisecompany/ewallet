@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Button, Input} from 'react-native-elements';
 import {updateData} from '../../actions/index';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const CreateAccountScreen = ({
   navigation,
@@ -44,7 +45,7 @@ const CreateAccountScreen = ({
           ref={input}
           containerStyle={{margin: 10}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Wallet nickname"
+          placeholder={Locale['TEXT__WALLET_NICKNAME']}
           leftIcon={{type: 'ionicon', name: 'ios-person'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={text => setNickname(text)}
@@ -54,7 +55,9 @@ const CreateAccountScreen = ({
             <Input
               containerStyle={{margin: 10}}
               inputStyle={{marginLeft: 10}}
-              placeholder="Password (6 ~ 14 characters)"
+              placeholder={`${Locale['TEXT_PASSWORD']} (${
+                Locale['HINT__CREATE_PASSWORD']
+              })`}
               leftIcon={{type: 'ionicon', name: 'ios-lock'}}
               leftIconContainerStyle={styles.leftIconContainerStyle}
               onChangeText={pin => setInputPinCode(pin)}
@@ -64,7 +67,7 @@ const CreateAccountScreen = ({
               ref={confirmInput}
               containerStyle={{margin: 10}}
               inputStyle={{marginLeft: 10}}
-              placeholder="Confirm Password"
+              placeholder={Locale['TEXT__CHECK_PASSWORD']}
               leftIcon={{type: 'ionicon', name: 'ios-lock'}}
               leftIconContainerStyle={styles.leftIconContainerStyle}
               onChangeText={pin => setConfirmPinCode(pin)}
@@ -75,7 +78,7 @@ const CreateAccountScreen = ({
         )}
       </View>
       <Button
-        title="Create Wallet"
+        title={Locale['TEXT__WALLET_CREATE']}
         buttonStyle={styles.buttonStyle}
         onPress={onPressLoading}
         disabled={

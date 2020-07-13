@@ -3,6 +3,7 @@ import {Image, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, Text} from 'react-native-elements';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const PRN = require('../../assets/imgPRN.png');
 
@@ -24,12 +25,12 @@ const LaunchScreen = ({navigation, isGenerating}) => {
       </View>
       <View style={styles.buttonGroup}>
         <Button
-          title="Import Wallet"
+          title={Locale['TEXT__WALLET_IMPORT']}
           buttonStyle={styles.buttonStyle}
           onPress={onPressImportWallet}
         />
         <Button
-          title="Create Wallet"
+          title={Locale['TEXT__WALLET_CREATE']}
           buttonStyle={styles.buttonStyle}
           onPress={onPressCreateAccount}
         />

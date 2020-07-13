@@ -1,3 +1,5 @@
+import Locale from './locales';
+
 export const BIP44_COINTYPE = {
   BCH: 145,
   BTC: 0,
@@ -13,13 +15,13 @@ export const COIN_NAME = {
 };
 
 export const CURRENCY = {
-  CNY: 'Renminbi',
-  IDR: 'Indonesian rupiah',
-  INR: 'Indian rupee',
-  JPY: 'Japanese yen',
-  KRW: 'South Korean won',
-  MYR: 'Malaysian ringgit',
-  SGD: 'Singapore dollar',
-  TWD: 'New Taiwan dollar',
-  USD: 'United States dollar',
+  CNY: Locale['CURRENCY__CNY'],
+  IDR: Locale['CURRENCY__IDR'],
+  INR: Locale['CURRENCY__INR'],
+  JPY: Locale['CURRENCY__JPY'],
+  KRW: Locale['CURRENCY__KRW'],
+  MYR: Locale['CURRENCY__MYR'],
+  SGD: Locale['CURRENCY__SGD'],
+  TWD: Locale['CURRENCY__TWD'],
+  USD: Locale['CURRENCY__USD'],
 };

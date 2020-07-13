@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchID from 'react-native-touch-id';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 export const checkTouchSupport = async () => {
   try {
@@ -51,7 +52,7 @@ const SendScreen = ({
   const onCheckTransaction = async () => {
     if (receiver === '' || amount === '') {
       Alert.alert(
-        'Error',
+        Locale['TEXT__GENERAL_ERROR'],
         'Something went wrong. Please check your input data.',
       );
     } else if (switchEnabled) {
@@ -70,7 +71,10 @@ const SendScreen = ({
                 }
               })
               .catch(() => {
-                Alert.alert('Error', 'Authentication Error.');
+                Alert.alert(
+                  Locale['TEXT__GENERAL_ERROR'],
+                  'Authentication Error.',
+                );
               });
           } else if (
             available &&
@@ -86,7 +90,10 @@ const SendScreen = ({
                 }
               })
               .catch(() => {
-                Alert.alert('Error', 'Authentication Error.');
+                Alert.alert(
+                  Locale['TEXT__GENERAL_ERROR'],
+                  'Authentication Error.',
+                );
               });
           } else if (
             available &&
@@ -102,14 +109,17 @@ const SendScreen = ({
                 }
               })
               .catch(() => {
-                Alert.alert('Error', 'Authentication Error.');
+                Alert.alert(
+                  Locale['TEXT__GENERAL_ERROR'],
+                  'Authentication Error.',
+                );
               });
           } else {
-            Alert.alert('Error', 'Authentication Error.');
+            Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Authentication Error.');
           }
         });
       } catch (error) {
-        Alert.alert('Error', 'Authentication Error.');
+        Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Authentication Error.');
       }
     } else if (
       coin === 'ETH' ||
@@ -137,7 +147,7 @@ const SendScreen = ({
   const pendingMessage = () => {
     setDisabled(true);
     if (pin !== pinCode && !switchEnabled) {
-      Alert.alert('Error', 'Incorrect password', [
+      Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Incorrect password', [
         {text: 'OK', onPress: () => setDisabled(false)},
       ]);
     } else {
@@ -218,7 +228,8 @@ const SendScreen = ({
       .collection('user')
       .doc('txdata')
       .update({
-        [`tx.${coin || 'error'}.${txid || 'error'}`]: note,
+        [`tx.${coin || Locale['TEXT__GENERAL_ERROR']}.${txid ||
+          Locale['TEXT__GENERAL_ERROR']}`]: note,
       })
       .then(() => {})
       .catch(console.log);
@@ -241,7 +252,7 @@ const SendScreen = ({
           value={receiver}
           containerStyle={{margin: 20, width: '85%'}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Receiver"
+          placeholder={Locale['TEXT__RECEIVER']}
           leftIcon={{type: 'ionicon', name: 'ios-person'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           rightIcon={{
@@ -282,7 +293,7 @@ const SendScreen = ({
             <Input
               // containerStyle={{margin: 10}}
               inputStyle={{marginLeft: 10}}
-              placeholder="Amount"
+              placeholder={Locale['TEXT__AMT']}
               onChangeText={text => setAmount(text)}
             />
           </View>
@@ -290,7 +301,7 @@ const SendScreen = ({
         <Input
           containerStyle={{margin: 20, width: '85%'}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Note"
+          placeholder={Locale['TEXT__NOTE']}
           // leftIcon={{type: 'ionicon', name: 'md-list-box'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={text => setNote(text)}
@@ -298,7 +309,7 @@ const SendScreen = ({
         <Input
           containerStyle={{margin: 20, width: '85%'}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Password"
+          placeholder={Locale['TEXT_PASSWORD']}
           // leftIcon={{type: 'ionicon', name: 'md-lock'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={code => setPin(code)}
@@ -326,7 +337,7 @@ const SendScreen = ({
           <Switch value={switchEnabled} onValueChange={toggleSwitch} />
         </View>
         <Button
-          title="Send"
+          title={Locale['TEXT__SEND']}
           buttonStyle={{
             paddingHorizontal: 100,
             backgroundColor: colors.mainLight,

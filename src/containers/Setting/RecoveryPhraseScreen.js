@@ -20,9 +20,9 @@ const RecoveryPhraseScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <View style={{width: '60%'}}>
         <Text style={{color: 'red'}}>
-          {
-            'Warning: Never disclose this key. Anyone with your private keys can steal any assets held in your account.'
-          }
+          {`${Locale['TEXT__GENERAL_WARNING']}: ${
+            Locale['HINT__ABOUT_PASSWORD']
+          }`}
         </Text>
       </View>
       <View style={styles.phraseContainer}>
@@ -32,7 +32,7 @@ const RecoveryPhraseScreen = ({navigation, route}) => {
         style={{justifyContent: 'center', alignItems: 'center'}}
         onPress={() => copyToClipboard(phrase)}>
         <Icon name="content-copy" size={50} />
-        <Text>Copy</Text>
+        <Text>{Locale['TEXT__COPY']}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -11,9 +11,10 @@ import {
 import {createWallet} from '../../actions/index';
 import {delay} from '../../utils/index';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const LoadingScreen = ({navigation, wallet, createWalletConnect, route}) => {
-  const [text, setText] = useState('Generating ...');
+  const [text, setText] = useState(Locale['MSG__WALLET_GENERATING']);
 
   useEffect(() => {
     const generateDefaultWallet = async () => {
@@ -32,7 +33,7 @@ const LoadingScreen = ({navigation, wallet, createWalletConnect, route}) => {
         phrase,
       });
       await delay(1000);
-      setText('Almost Done!');
+      setText(Locale['MSG__WALLET_GENERATED']);
       await delay(1000);
       navigation.reset({
         index: 0,

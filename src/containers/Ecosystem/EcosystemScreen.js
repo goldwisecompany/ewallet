@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {createWallet} from '../../actions/index';
+import Locale from 'ewallet/src/locales';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -43,7 +44,7 @@ const EcosystemScreen = ({navigation}) => {
             source={require('../../assets/casino.jpg')}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.text}>Game</Text>
+            <Text style={styles.text}>{Locale['TEXT__GAME']}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -54,7 +55,7 @@ const EcosystemScreen = ({navigation}) => {
             source={require('../../assets/island.jpg')}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.text}>Resort</Text>
+            <Text style={styles.text}>{Locale['TEXT__RESORT']}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -66,7 +67,7 @@ const EcosystemScreen = ({navigation}) => {
           source={require('../../assets/hotel.jpg')}
         />
         <View style={styles.textWrapper}>
-          <Text style={styles.text}>Hotel</Text>
+          <Text style={styles.text}>{Locale['TEXT_HOTEL']}</Text>
         </View>
       </TouchableOpacity>
       <View style={styles.row}>
@@ -78,7 +79,7 @@ const EcosystemScreen = ({navigation}) => {
             source={require('../../assets/yacht.jpg')}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.text}>Yacht</Text>
+            <Text style={styles.text}>{Locale['TEXT__YACHT']}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -89,7 +90,7 @@ const EcosystemScreen = ({navigation}) => {
             source={require('../../assets/travel.jpg')}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.text}>Travel</Text>
+            <Text style={styles.text}>{Locale['TEXT__Travel']}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -101,7 +102,7 @@ const EcosystemScreen = ({navigation}) => {
           source={require('../../assets/otc.jpg')}
         />
         <View style={styles.textWrapper}>
-          <Text style={styles.text}>OTC</Text>
+          <Text style={styles.text}>{Locale['TEXT__OTC']}</Text>
         </View>
       </TouchableOpacity>
     </View>

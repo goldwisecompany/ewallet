@@ -21,6 +21,7 @@ import {colors, fonts} from '../../styles';
 import {getPrice} from '../../services/api';
 import {updateBlogs, registerUuid} from '../../actions/index';
 import {floor10} from '../../services/math';
+import Locale from 'ewallet/src/locales';
 
 const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
@@ -144,17 +145,17 @@ const WalletScreen = ({
 
   const buttonList = [
     {
-      title: 'Send',
+      title: Locale['TEXT__SEND'],
       icon: 'arrow-upward',
       onPress: () => navigation.navigate('Send', {coin: 'PRN'}),
     },
     {
-      title: 'Receive',
+      title: Locale['TEXT__RECEIVE'],
       icon: 'arrow-downward',
       onPress: () => navigation.navigate('Receive', {coin: 'PRN'}),
     },
     {
-      title: 'Scan',
+      title: Locale['TEXT__SCAN'],
       icon: 'crop-free',
       onPress: () => navigation.navigate('Scanner'),
     },

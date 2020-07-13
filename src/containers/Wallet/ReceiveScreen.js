@@ -14,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
 import QRCode from 'react-native-qrcode-svg';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const ReceiveScreen = ({navigation, route, myWallets, current}) => {
   const [coin, setCoin] = useState(
@@ -59,13 +60,13 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
           style={styles.icon}
           onPress={() => shareAddress(myWallets[current][coin].address)}>
           <Icon name="share" size={50} />
-          <Text>Share</Text>
+          <Text>{Locale['TEXT__SHARE']}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.icon}
           onPress={() => copyToClipboard(myWallets[current][coin].address)}>
           <Icon name="content-copy" size={50} />
-          <Text>Copy</Text>
+          <Text>{Locale['TEXT__COPY']}</Text>
         </TouchableOpacity>
       </View>
     </View>

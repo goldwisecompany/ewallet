@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Button, Input} from 'react-native-elements';
 import {validateMnemonic} from '../../services/wallet';
 import {colors} from '../../styles';
+import Locale from 'ewallet/src/locales';
 
 const ImportWalletScreen = ({navigation}) => {
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
@@ -19,7 +20,7 @@ const ImportWalletScreen = ({navigation}) => {
     if (isValid) {
       navigation.navigate('CreateAccount', {recoveryPhrase});
     } else {
-      Alert.alert('Waring', 'Invalid 12-word Recovery Phrase.');
+      Alert.alert('Waring', Locale['MSG__WALLET_INVALID_IMPORT']);
     }
   };
 
@@ -30,7 +31,7 @@ const ImportWalletScreen = ({navigation}) => {
       <View style={styles.inputWrapper}>
         <Input
           containerStyle={styles.input}
-          placeholder="Paste your 12-word recovery phrase here to restore your wallet."
+          placeholder={Locale['PLACEHOLDER__WALLET_RECOVERY_PHRASE']}
           onChangeText={text => setRecoveryPhrase(text)}
           inputContainerStyle={{borderBottomWidth: 0, flex: 1}}
           multiline
@@ -40,7 +41,7 @@ const ImportWalletScreen = ({navigation}) => {
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button
-          title="Import Wallet"
+          title={Locale[TEXT__WALLET_IMPORT]}
           buttonStyle={styles.buttonStyle}
           onPress={onPressNext}
         />

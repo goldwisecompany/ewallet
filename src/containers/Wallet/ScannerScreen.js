@@ -32,9 +32,11 @@ const ScannerScreen = ({navigation, route}) => {
           ],
         });
       } else {
-        Alert.alert('Warning', 'Invalid address format.', [
-          {text: 'OK', onPress: () => setIsLoading(false)},
-        ]);
+        Alert.alert(
+          Locale['TEXT__GENERAL_WARNING'],
+          Locale['MSG__INVALID_ADDRESS_FORMAT'],
+          [{text: 'OK', onPress: () => setIsLoading(false)}],
+        );
       }
     } else {
       setIsLoading(false);
