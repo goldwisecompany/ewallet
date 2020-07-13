@@ -54,6 +54,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-indicators": "^0.17.0",
     "react-native-level-fs": "^3.0.1",
+    "react-native-localization": "^2.1.6",
     "react-native-macos": "^0.61.0-0",
     "react-native-os": "^1.2.6",
     "react-native-picker-select": "^6.6.0",
