@@ -309,7 +309,7 @@ const SendScreen = ({
         <Input
           containerStyle={{margin: 20, width: '85%'}}
           inputStyle={{marginLeft: 10}}
-          placeholder={Locale['TEXT_PASSWORD']}
+          placeholder={Locale['TEXT__PASSWORD']}
           // leftIcon={{type: 'ionicon', name: 'md-lock'}}
           leftIconContainerStyle={{width: 40, marginLeft: 0}}
           onChangeText={code => setPin(code)}

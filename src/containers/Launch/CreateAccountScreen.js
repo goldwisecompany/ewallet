@@ -55,7 +55,7 @@ const CreateAccountScreen = ({
             <Input
               containerStyle={{margin: 10}}
               inputStyle={{marginLeft: 10}}
-              placeholder={`${Locale['TEXT_PASSWORD']} (${
+              placeholder={`${Locale['TEXT__PASSWORD']} (${
                 Locale['HINT__CREATE_PASSWORD']
               })`}
               leftIcon={{type: 'ionicon', name: 'ios-lock'}}

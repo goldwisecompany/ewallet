@@ -4,7 +4,7 @@
   "PLACEHOLDER__WALLET_RECOVERY_PHRASE": "Paste your 12-word recovery phrase here to restore your wallet.",
   "MSG__WALLET_INVALID_IMPORT": "Invalid 12-word Recovery Phrase.",
   "TEXT__WALLET_NICKNAME": "Wallet nickname",
-  "TEXT_PASSWORD": "Password",
+  "TEXT__PASSWORD": "Password",
   "HINT__CREATE_PASSWORD": "6 ~ 14 characters",
   "MSG__WALLET_GENERATING": "Generating ...",
   "MSG__WALLET_GENERATED": "Almost Done!",
