@@ -274,7 +274,10 @@ const TransactionHistoryScreen = ({
                 date: new Date(tx.timeStamp * 1000).toLocaleString(),
                 value: web3.utils.fromWei(tx.value, 'wei'),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
-              }));
+              }))
+              .sort(
+                (txA, txB) => Number(txB.timeStamp) - Number(txA.timeStamp),
+              );
             if (isSubscribed) {
               console.log(newList, 'newList');
               setTransactionList(newList);

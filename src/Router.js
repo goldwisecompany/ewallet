@@ -64,22 +64,22 @@ const WalletStack = ({navigation, route}) => (
     <Stack.Screen
       name="Scanner"
       component={ScannerScreen}
-      options={setStackOptions(Locale['TEXT__SCANNER'])}
+      options={setStackOptions(Locale.TEXT__SCANNER)}
     />
     <Stack.Screen
       name="Send"
       component={SendScreen}
-      options={setStackOptions(Locale['TEXT__SEND'])}
+      options={setStackOptions(Locale.TEXT__SEND)}
     />
     <Stack.Screen
       name="Receive"
       component={ReceiveScreen}
-      options={setStackOptions(Locale['TEXT__RECEIVE'])}
+      options={setStackOptions(Locale.TEXT__RECEIVE)}
     />
     <Stack.Screen
       name="TransactionHistory"
       component={TransactionHistoryScreen}
-      options={setStackOptions(Locale['TEXT__TRANSACTION_HISTORY'])}
+      options={setStackOptions(Locale.TEXT__TRANSACTION_HISTORY)}
     />
   </Stack.Navigator>
 );
@@ -89,7 +89,7 @@ const CommunityStack = () => (
     <Stack.Screen
       name="News"
       component={NewsScreen}
-      options={setStackOptions(Locale['TEXT__NEWS'])}
+      options={setStackOptions(Locale.TEXT__NEWS)}
     />
   </Stack.Navigator>
 );
@@ -99,19 +99,19 @@ const EcosystemStack = () => (
     <Stack.Screen
       name="Ecosystem"
       component={EcosystemScreen}
-      options={setStackOptions(Locale['TEXT__ECOSYSTEM'])}
+      options={setStackOptions(Locale.TEXT__ECOSYSTEM)}
     />
     <Stack.Screen
       name="EcoBlogs"
       component={EcoBlogsScreen}
       options={setStackOptions(
-        `${Locale['TEXT__ECOSYSTEM']} ${Locale['TEXT__BLOGS']}`,
+        `${Locale.TEXT__ECOSYSTEM} ${Locale.TEXT__BLOGS}`,
       )}
     />
     <Stack.Screen
       name="EcoDetail"
       component={EcoDetailScreen}
-      options={setStackOptions(Locale['TEXT__BLOGS'])}
+      options={setStackOptions(Locale.TEXT__BLOGS)}
     />
   </Stack.Navigator>
 );
@@ -121,47 +121,47 @@ const SettingStack = () => (
     <Stack.Screen
       name="Setting"
       component={SettingScreen}
-      options={setStackOptions(Locale['TEXT__SETTING'])}
+      options={setStackOptions(Locale.TEXT__SETTING)}
     />
     <Stack.Screen
       name="WalletManagement"
       component={WalletManagementScreen}
-      options={setStackOptions(Locale['TEXT__WALLET_MANAGEMENT'])}
+      options={setStackOptions(Locale.TEXT__WALLET_MANAGEMENT)}
     />
     <Stack.Screen
       name="Currency"
       component={CurrencyScreen}
-      options={setStackOptions(Locale['TEXT__CURRENCY'])}
+      options={setStackOptions(Locale.TEXT__CURRENCY)}
     />
     <Stack.Screen
       name="RecoveryPhrase"
       component={RecoveryPhraseScreen}
-      options={setStackOptions(Locale['TEXT__RECOVERY_PHRASE'])}
+      options={setStackOptions(Locale.TEXT__RECOVERY_PHRASE)}
     />
     <Stack.Screen
       name="PinCode"
       component={PinCodeScreen}
-      options={setStackOptions(Locale['TEXT__INPUT_PASSWORD'])}
+      options={setStackOptions(Locale.TEXT__INPUT_PASSWORD)}
     />
     <Stack.Screen
       name="TermsofService"
       component={TermsofServiceScreen}
-      options={setStackOptions(Locale['TEXT__TERMS_OF_SERVICE'])}
+      options={setStackOptions(Locale.TEXT__TERMS_OF_SERVICE)}
     />
     <Stack.Screen
       name="PrivacyPolicy"
       component={PrivacyPolicyScreen}
-      options={setStackOptions(Locale['TEXT__PRIVACY_POLICY'])}
+      options={setStackOptions(Locale.TEXT__PRIVACY_POLICY)}
     />
     <Stack.Screen
       name="Faq"
       component={FaqScreen}
-      options={setStackOptions(Locale['TEXT__FAQ'])}
+      options={setStackOptions(Locale.TEXT__FAQ)}
     />
     <Stack.Screen
       name="AboutUs"
       component={AboutUsScreen}
-      options={setStackOptions(Locale['TEXT__ABOUT_US'])}
+      options={setStackOptions(Locale.TEXT__ABOUT_US)}
     />
     <Stack.Screen
       name="ResetPinCode"
@@ -202,10 +202,21 @@ const MainTabStack = () => (
             tabBarVisible: false,
           };
         }
+        return {
+          tabBarLabel: Locale.TEXT__WALLET,
+        };
       }}
     />
-    <Tab.Screen name="News" component={CommunityStack} />
-    <Tab.Screen name="Ecosystem" component={EcosystemStack} />
+    <Tab.Screen
+      name="News"
+      component={CommunityStack}
+      options={{tabBarLabel: Locale.TEXT__NEWS}}
+    />
+    <Tab.Screen
+      name="Ecosystem"
+      component={EcosystemStack}
+      options={{tabBarLabel: Locale.TEXT__ECOSYSTEM}}
+    />
     <Tab.Screen
       name="Setting"
       component={SettingStack}
@@ -219,6 +230,9 @@ const MainTabStack = () => (
             tabBarVisible: false,
           };
         }
+        return {
+          tabBarLabel: Locale.TEXT__SETTING,
+        };
       }}
     />
   </Tab.Navigator>
@@ -245,12 +259,12 @@ const Router = props => {
         <LaunchStack.Screen
           name="CreateAccount"
           component={CreateAccountScreen}
-          options={setStackOptions('Create Account')}
+          options={setStackOptions(Locale.TEXT__CREATE_ACCOUNT)}
         />
         <LaunchStack.Screen
           name="ImportWallet"
           component={ImportWalletScreen}
-          options={setStackOptions(Locale['TEXT__WALLET_IMPORT'])}
+          options={setStackOptions(Locale.TEXT__WALLET_IMPORT)}
         />
         <LaunchStack.Screen
           name="Loading"

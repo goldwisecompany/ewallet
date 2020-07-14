@@ -27,7 +27,7 @@ const LoadingScreen = ({navigation, wallet, createWalletConnect, route}) => {
       const USDT = await generateCoinWallet(phrase, '60');
       const BCH = await generateCoinWallet(phrase, '145');
       const TRX = await generateCoinWallet(phrase, '195');
-      setText('Creating Wallet ...');
+      setText(Locale['TEXT__WALLET_CREATE']);
       createWalletConnect({
         myWallets: {BTC, BCH, ETH, PRN, TRX, USDT},
         phrase,

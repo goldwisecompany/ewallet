@@ -131,9 +131,9 @@ const NewsScreen = ({navigation}) => {
 
   const renderIcon = ({route, color}) => {
     const icons = {
-      News: 'newspaper',
-      Blogs: 'rss',
-      Investment: 'currency-usd',
+      [Locale['TEXT__NEWS']]: 'newspaper',
+      [Locale['TEXT__BLOGS']]: 'rss',
+      [Locale['TEXT__INVESTMENT']]: 'currency-usd',
     };
     return (
       <Icon name={icons[route.title]} size={20} iconStyle={{marginTop: 0}} />

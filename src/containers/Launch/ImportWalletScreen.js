@@ -44,7 +44,7 @@ const ImportWalletScreen = ({navigation}) => {
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button
-          title={Locale[TEXT__WALLET_IMPORT]}
+          title={Locale['TEXT__WALLET_IMPORT']}
           buttonStyle={styles.buttonStyle}
           onPress={onPressNext}
         />
