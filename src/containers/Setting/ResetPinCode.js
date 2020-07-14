@@ -30,7 +30,10 @@ const ResetPinCodeScreen = ({
       updateDataConnect({
         pinCode: inputPinCode || pinCode,
       });
-      Alert.alert('Success', 'Password Reset Successfully');
+      Alert.alert(
+        Locale['TEXT__GENERAL_SUCCESS'],
+        Locale['MSG__PASSWORD_RESET_SUCCESS'],
+      );
       navigation.popToTop();
     }
   };
@@ -58,12 +61,12 @@ const ResetPinCodeScreen = ({
           ref={confirmInput}
           containerStyle={{margin: 10}}
           inputStyle={{marginLeft: 10}}
-          placeholder="Confirm Password"
+          placeholder={Locale['PLACEHOLDER__CONFIRM_PASSWORD']}
           leftIcon={{type: 'ionicon', name: 'ios-lock'}}
           leftIconContainerStyle={styles.leftIconContainerStyle}
           onChangeText={pin => setConfirmPinCode(pin)}
           maxLength={14}
-          errorMessage={isChecked ? '' : 'Password Inconsistent'}
+          errorMessage={isChecked ? '' : Locale['MSG__PASSWORD_INCONSISTENT']}
         />
       </View>
       <Button

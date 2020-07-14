@@ -76,15 +76,14 @@ const NewsScreen = ({navigation}) => {
           url: 'https://debank.com/',
           image:
             'https://theme.zdassets.com/theme_assets/9347551/ab92fd402a6d803c4e7752b6ca6e48f6749ae322.png',
-          subtitle:
-            "DeBank's mission is to build a bridge between users and DeFi tech.",
+          subtitle: Locale['DESC__INVESTMENT_PROJECTS_DEBANK'],
         },
         {
           title: 'Celsius Network',
           url: 'https://celsius.network/',
           image:
             'https://23m75o3e07wtfdo7h17w4u61-wpengine.netdna-ssl.com/wp-content/themes/wpog_celsius/assets/img/logo-celsius@2x.png',
-          subtitle: 'Earn, Borrow & Pay on the Blockchain',
+          subtitle: Locale['DESC__INVESTMENT_PROJECTS_CELSIUS_NETWORK'],
         },
       ]);
     };

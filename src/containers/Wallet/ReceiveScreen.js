@@ -23,7 +23,7 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
 
   const copyToClipboard = async text => {
     await Clipboard.setString(text);
-    Alert.alert('', 'Address Copied!');
+    Alert.alert('', Locale['MSG__ADDRESS_COPIED']);
   };
 
   const shareAddress = text => {

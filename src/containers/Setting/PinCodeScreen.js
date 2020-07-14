@@ -20,7 +20,7 @@ const PinCodeScreen = ({navigation, phrase, current, pinCode, route}) => {
     if (pin !== pinCode) {
       Alert.alert(
         Locale['TEXT__GENERAL_ERROR'],
-        Locale['MSG_INCORRECT_PASSWORD'],
+        Locale['MSG__INCORRECT_PASSWORD'],
       );
     } else if (route && route.params && route.params.resetPinCode) {
       navigation.dispatch(StackActions.replace('ResetPinCode'));

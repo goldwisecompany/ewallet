@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Icon, Text} from 'react-native-elements';
+import Locale from 'ewallet/src/locales';
 
 const RecoveryPhraseScreen = ({navigation, route}) => {
   const {phrase} = route.params;
 
   const copyToClipboard = async text => {
     await Clipboard.setString(text);
-    Alert.alert('', 'Recovery Phrase Copied!');
+    Alert.alert('', Locale['MSG__RECOVERY_PHRASE_COPIED']);
   };
 
   return (

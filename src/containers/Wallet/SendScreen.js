@@ -51,10 +51,7 @@ const SendScreen = ({
 
   const onCheckTransaction = async () => {
     if (receiver === '' || amount === '') {
-      Alert.alert(
-        Locale['TEXT__GENERAL_ERROR'],
-        'Something went wrong. Please check your input data.',
-      );
+      Alert.alert(Locale['TEXT__GENERAL_ERROR'], Locale['MSG__INVALID_INPUT']);
     } else if (switchEnabled) {
       try {
         // const deviceTouchType = await checkTouchSupport();
@@ -62,7 +59,7 @@ const SendScreen = ({
           const {available, biometryType} = resultObject;
           if (available && biometryType === ReactNativeBiometrics.TouchID) {
             ReactNativeBiometrics.simplePrompt({
-              promptMessage: 'Confirm fingerprint',
+              promptMessage: Locale['HINT__FINGERPRINT'],
             })
               .then(resultObject => {
                 const {success} = resultObject;
@@ -73,7 +70,7 @@ const SendScreen = ({
               .catch(() => {
                 Alert.alert(
                   Locale['TEXT__GENERAL_ERROR'],
-                  'Authentication Error.',
+                  Locale['MSG__AUTH_ERROR'],
                 );
               });
           } else if (
@@ -81,7 +78,7 @@ const SendScreen = ({
             biometryType === ReactNativeBiometrics.FaceID
           ) {
             ReactNativeBiometrics.simplePrompt({
-              promptMessage: 'Confirm FaceID',
+              promptMessage: Locale['HINT__FACEID'],
             })
               .then(resultObject => {
                 const {success} = resultObject;
@@ -92,7 +89,7 @@ const SendScreen = ({
               .catch(() => {
                 Alert.alert(
                   Locale['TEXT__GENERAL_ERROR'],
-                  'Authentication Error.',
+                  Locale['MSG__AUTH_ERROR'],
                 );
               });
           } else if (
@@ -100,7 +97,7 @@ const SendScreen = ({
             biometryType === ReactNativeBiometrics.Biometrics
           ) {
             ReactNativeBiometrics.simplePrompt({
-              promptMessage: 'Confirm Biometrics',
+              promptMessage: Locale['HINT__BIOMETRICS'],
             })
               .then(resultObject => {
                 const {success} = resultObject;
@@ -111,15 +108,18 @@ const SendScreen = ({
               .catch(() => {
                 Alert.alert(
                   Locale['TEXT__GENERAL_ERROR'],
-                  'Authentication Error.',
+                  Locale['MSG__AUTH_ERROR'],
                 );
               });
           } else {
-            Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Authentication Error.');
+            Alert.alert(
+              Locale['TEXT__GENERAL_ERROR'],
+              Locale['MSG__AUTH_ERROR'],
+            );
           }
         });
       } catch (error) {
-        Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Authentication Error.');
+        Alert.alert(Locale['TEXT__GENERAL_ERROR'], Locale['MSG__AUTH_ERROR']);
       }
     } else if (
       coin === 'ETH' ||
@@ -129,29 +129,27 @@ const SendScreen = ({
       coin === 'BCH' ||
       coin === 'USDT'
     ) {
-      Alert.alert(
-        'Transfer',
-        'Are you sure you want to sent the transaction?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => pendingMessage()},
-        ],
-      );
+      Alert.alert(Locale['TEXT__TRANSFER'], Locale['MSG__CONFIRM_TRANSFER'], [
+        {
+          text: Locale['TEXT__CANCEL'],
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => pendingMessage()},
+      ]);
     }
   };
 
   const pendingMessage = () => {
     setDisabled(true);
     if (pin !== pinCode && !switchEnabled) {
-      Alert.alert(Locale['TEXT__GENERAL_ERROR'], 'Incorrect password', [
-        {text: 'OK', onPress: () => setDisabled(false)},
-      ]);
+      Alert.alert(
+        Locale['TEXT__GENERAL_ERROR'],
+        Locale['MSG__INCORRECT_PASSWORD'],
+        [{text: 'OK', onPress: () => setDisabled(false)}],
+      );
     } else {
-      Alert.alert('Transaction Sent!', 'The transaction has been sent.', [
+      Alert.alert(Locale['TEXT__TRANSFER_SENT'], Locale['MSG__TRANSFER_SENT'], [
         {text: 'OK', onPress: () => transfer()},
       ]);
     }
@@ -214,11 +212,14 @@ const SendScreen = ({
         navigation.popToTop();
         clearTimeout(timer);
       }, 3000);
-      Alert.alert('Transaction Success', 'The transaction has been Confirmed.');
+      Alert.alert(
+        Locale['TEXT__TRANSFER_SUCCESS'],
+        Locale['MSG__TRANSFER_SUCCESS'],
+      );
     } catch (error) {
       Alert.alert(
-        'Transaction error',
-        'Something Went Wrong, Please Check Your Input Data.',
+        Locale['TEXT__TRANSFER_ERROR'],
+        Locale['MSG__TRANSFER_ERROR'],
       );
       setDisabled(false);
     }
@@ -242,7 +243,7 @@ const SendScreen = ({
           <View style={styles.pendingMessage}>
             <Icon name="info-outline" size={20} color="gray" />
             <Text style={{color: 'gray', paddingLeft: 5}}>
-              A transaction is Pending.
+              {Locale['MSG__TRANSACTION_PENDING']}
             </Text>
           </View>
         )}
@@ -332,7 +333,7 @@ const SendScreen = ({
               alignItems: 'center',
             }}>
             <Icon name="fingerprint" size={25} color="gray" />
-            <Text>Biometric Authentication</Text>
+            <Text>{Locale['TEXT__BIOMETRIC_AUTH']}</Text>
           </View>
           <Switch value={switchEnabled} onValueChange={toggleSwitch} />
         </View>

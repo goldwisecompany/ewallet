@@ -5,6 +5,7 @@ import {RNCamera} from 'react-native-camera';
 import {web3, tronWeb, bitbox} from '../../services/wallet';
 
 import SquareMask from '../../components/SquareMask';
+import Locale from 'ewallet/src/locales';
 
 const ScannerScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,13 +51,11 @@ const ScannerScreen = ({navigation, route}) => {
         type={RNCamera.Constants.Type.back}
         barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
         androidCameraPermissionOptions={{
-          title: 'Permission to use camera',
-          message: 'We need your permission to use your camera',
+          title: Locale['TEXT__REQUEST_CAMERA_PERMISSION'],
+          message: Locale['DESC__REQUEST_CAMERA_PERMISSION'],
         }}
-        permissionDialogTitle={'Permission to use camera'}
-        permissionDialogMessage={
-          'We need your permission to use your camera phone'
-        }
+        permissionDialogTitle={Locale['TEXT__REQUEST_CAMERA_PERMISSION']}
+        permissionDialogMessage={Locale['DESC__REQUEST_CAMERA_PERMISSION']}
         captureAudio={false}
         onBarCodeRead={onScan}>
         <SquareMask />
