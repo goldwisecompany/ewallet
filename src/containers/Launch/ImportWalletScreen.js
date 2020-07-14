@@ -20,7 +20,10 @@ const ImportWalletScreen = ({navigation}) => {
     if (isValid) {
       navigation.navigate('CreateAccount', {recoveryPhrase});
     } else {
-      Alert.alert('Waring', Locale['MSG__WALLET_INVALID_IMPORT']);
+      Alert.alert(
+        Locale['TEXT__GENERAL_WARNING'],
+        Locale['MSG__WALLET_INVALID_IMPORT'],
+      );
     }
   };
 
