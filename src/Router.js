@@ -166,7 +166,7 @@ const SettingStack = () => (
     <Stack.Screen
       name="ResetPinCode"
       component={ResetPinCodeScreen}
-      options={setStackOptions()}
+      options={setStackOptions(Locale.TEXT__RESET_PASSWORD)}
     />
   </Stack.Navigator>
 );

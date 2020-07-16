@@ -90,7 +90,7 @@ const EcosystemScreen = ({navigation}) => {
             source={require('../../assets/travel.jpg')}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.text}>{Locale['TEXT__Travel']}</Text>
+            <Text style={styles.text}>{Locale['TEXT__TRAVEL']}</Text>
           </View>
         </TouchableOpacity>
       </View>

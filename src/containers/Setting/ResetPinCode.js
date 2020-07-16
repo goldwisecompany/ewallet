@@ -70,7 +70,7 @@ const ResetPinCodeScreen = ({
         />
       </View>
       <Button
-        title="Reset"
+        title={Locale['TEXT__RESET']}
         buttonStyle={styles.buttonStyle}
         onPress={onPressLoading}
         disabled={!(inputPinCode.length >= 6 && inputPinCode.length <= 14)}
