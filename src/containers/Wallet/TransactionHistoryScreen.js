@@ -117,6 +117,7 @@ const TransactionHistoryScreen = ({
                     : 'Receive',
                 note: (mappingHash && mappingHash[item.hash]) || '',
               }))
+              .filter(item => item.input === '0x')
               .filter((_, index) => index < 30),
           );
           if (isSubscribed) {
