@@ -5,7 +5,7 @@ import {Button, Text} from 'react-native-elements';
 import {colors} from '../../styles';
 import Locale from 'ewallet/src/locales';
 
-const PRN = require('../../assets/imgPRN.png');
+const PRNC = require('../../assets/imgPRN.png');
 
 const LaunchScreen = ({navigation, isGenerating}) => {
   const onPressCreateAccount = () => {
@@ -20,7 +20,7 @@ const LaunchScreen = ({navigation, isGenerating}) => {
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
         <View style={styles.logo}>
-          <Image style={styles.logo} source={PRN} />
+          <Image style={styles.logo} source={PRNC} />
         </View>
       </View>
       <View style={styles.buttonGroup}>

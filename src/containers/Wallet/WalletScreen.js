@@ -27,7 +27,7 @@ const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
 const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
-const PRN = require('../../assets/imgPRN.png');
+const PRNC = require('../../assets/imgPRN.png');
 const USDT = require('../../assets/USDT.png');
 
 const deviceHeight = Dimensions.get('window').height;
@@ -46,7 +46,7 @@ const WalletScreen = ({
   uuidMobile,
 }) => {
   const [balances, setBalances] = useState({
-    PRN: '0',
+    PRNC: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
@@ -55,7 +55,7 @@ const WalletScreen = ({
   });
 
   const [priceList, setPriceList] = useState({
-    PRN: '0',
+    PRNC: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
@@ -111,12 +111,12 @@ const WalletScreen = ({
     {
       title: Locale['TEXT__SEND'],
       icon: 'arrow-upward',
-      onPress: () => navigation.navigate('Send', {coin: 'PRN'}),
+      onPress: () => navigation.navigate('Send', {coin: 'PRNC'}),
     },
     {
       title: Locale['TEXT__RECEIVE'],
       icon: 'arrow-downward',
-      onPress: () => navigation.navigate('Receive', {coin: 'PRN'}),
+      onPress: () => navigation.navigate('Receive', {coin: 'PRNC'}),
     },
     {
       title: Locale['TEXT__SCAN'],
@@ -131,7 +131,7 @@ const WalletScreen = ({
       BTC: BTC,
       ETH: ETH,
       TRX: TRX,
-      PRN: PRN,
+      PRNC: PRNC,
       USDT: USDT,
     };
     return imageList[theCoin];
@@ -211,7 +211,7 @@ const WalletScreen = ({
         BTC: btcBalance,
         ETH: ethBalance,
         TRX: trxBalance,
-        PRN: prnBalance,
+        PRNC: prnBalance,
         USDT: usdtBalance,
       });
       let priceData = [];
@@ -222,7 +222,7 @@ const WalletScreen = ({
       }
       if (priceData.length !== 0) {
         setPriceList({
-          PRN: 0.1 * Number(prnBalance),
+          PRNC: 1 * Number(prnBalance), // usd dollar
           BTC: Number(priceData[0][0].price_usd) * Number(btcBalance),
           BCH: Number(priceData[1][0].price_usd) * Number(bchBalance),
           ETH: Number(priceData[2][0].price_usd) * Number(ethBalance),
@@ -365,7 +365,7 @@ const WalletScreen = ({
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={keyExtractor}
-          data={['PRN', 'BTC', 'ETH', 'TRX', 'USDT']}
+          data={['PRNC', 'BTC', 'ETH', 'TRX', 'USDT']}
           renderItem={renderItem}
           scrollEnabled={true}
         />

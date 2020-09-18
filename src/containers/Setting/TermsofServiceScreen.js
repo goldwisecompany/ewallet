@@ -16,7 +16,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           PRNC wallet(The “Service”). We hereby remind you that you must
           carefully read the full content of this agreement before using our
           mobile application “PRNC wallet”. You must make sure that you fully
-          understand the whole agreement and evaluate the risks of using PRN
+          understand the whole agreement and evaluate the risks of using PRNC
           wallet on your own. You may use the Service only in accordance with
           the following terms and conditions.
         </Text>
@@ -28,7 +28,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           you have read and understood the following terms of use and you agree
           to be bound by them and to comply with all the laws and regulations
           regarding your use of the Service, and you acknowledge that these
-          terms constitute a binding and enforceable legal contract between PRN
+          terms constitute a binding and enforceable legal contract between PRNC
           wallet Inc. and you. IF YOU DO NOT AGREE TO THESE TERMS, PLEASE DO NOT
           USE, DOWNLOAD OR ACCESS DAPP POCKET. The Service is not allowed for
           use by individuals who are under the age of eighteen (18) years old.

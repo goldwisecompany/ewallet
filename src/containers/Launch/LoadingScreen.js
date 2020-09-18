@@ -23,13 +23,13 @@ const LoadingScreen = ({navigation, wallet, createWalletConnect, route}) => {
       await delay(1000);
       const BTC = await generateCoinWallet(phrase, '0');
       const ETH = await generateCoinWallet(phrase, '60');
-      const PRN = await generateCoinWallet(phrase, '60');
+      const PRNC = await generateCoinWallet(phrase, '60');
       const USDT = await generateCoinWallet(phrase, '60');
       const BCH = await generateCoinWallet(phrase, '145');
       const TRX = await generateCoinWallet(phrase, '195');
       setText(Locale['TEXT__WALLET_CREATE']);
       createWalletConnect({
-        myWallets: {BTC, BCH, ETH, PRN, TRX, USDT},
+        myWallets: {BTC, BCH, ETH, PRNC, TRX, USDT},
         phrase,
       });
       await delay(1000);

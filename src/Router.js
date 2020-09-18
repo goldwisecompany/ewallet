@@ -59,7 +59,7 @@ const WalletStack = ({navigation, route}) => (
     <Stack.Screen
       name="Wallet"
       component={WalletScreen}
-      options={setStackOptions('PRN')}
+      options={setStackOptions('PRNC')}
     />
     <Stack.Screen
       name="Scanner"

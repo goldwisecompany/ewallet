@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Button, ListItem, Text} from 'react-native-elements';
 import {updateBlogs} from '../../actions/index';
 
-const PRN = require('../../assets/imgPRN.png');
+const PRNC = require('../../assets/imgPRN.png');
 
 const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.icon} source={PRN} />
+      <Image style={styles.icon} source={PRNC} />
     </View>
   );
 };

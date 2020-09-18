@@ -19,7 +19,7 @@ const BCH = require('../../assets/BCH.png');
 const BTC = require('../../assets/BTC.png');
 const ETH = require('../../assets/ETH.png');
 const TRX = require('../../assets/TRX.png');
-const PRN = require('../../assets/imgPRN.png');
+const PRNC = require('../../assets/imgPRN.png');
 const USDT = require('../../assets/USDT.png');
 
 const TransactionHistoryScreen = ({
@@ -31,7 +31,7 @@ const TransactionHistoryScreen = ({
   currency,
   uuidMobile,
 }) => {
-  const coin = (route.params && route.params.coin) || 'PRN';
+  const coin = (route.params && route.params.coin) || 'PRNC';
   const [isInit, setIsInit] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [transactionList, setTransactionList] = useState([]);
@@ -62,7 +62,7 @@ const TransactionHistoryScreen = ({
       BTC: BTC,
       ETH: ETH,
       TRX: TRX,
-      PRN: PRN,
+      PRNC: PRNC,
       USDT: USDT,
     };
     return imageList[theCoin];
@@ -255,9 +255,9 @@ const TransactionHistoryScreen = ({
               }
             }
           }
-        } else if (route.params.coin === 'PRN') {
+        } else if (route.params.coin === 'PRNC') {
           // TODO: Migration to mainnet
-          const address = myWallets[current].PRN.address;
+          const address = myWallets[current].PRNC.address;
           const res = await fetch(
             `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );

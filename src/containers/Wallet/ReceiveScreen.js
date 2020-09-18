@@ -18,7 +18,7 @@ import Locale from 'ewallet/src/locales';
 
 const ReceiveScreen = ({navigation, route, myWallets, current}) => {
   const [coin, setCoin] = useState(
-    (route.params && route.params.coin) || 'PRN',
+    (route.params && route.params.coin) || 'PRNC',
   );
 
   const copyToClipboard = async text => {
@@ -39,7 +39,7 @@ const ReceiveScreen = ({navigation, route, myWallets, current}) => {
           placeholder={{}}
           value={coin}
           items={[
-            {label: 'PRN', value: 'PRN'},
+            {label: 'PRNC', value: 'PRNC'},
             {label: 'BTC', value: 'BTC'},
             {label: 'ETH', value: 'ETH'},
             {label: 'TRX', value: 'TRX'},
