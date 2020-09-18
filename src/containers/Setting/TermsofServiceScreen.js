@@ -10,12 +10,12 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
       <View style={{margin: 20}}>
         <Text>Effective date: April 30, 2020</Text>
         <Text>
-          Dear User, Thank you for choosing PRN wallet as your crypto assets
-          wallet. PRN wallet Inc. (the “Company”, “we”, “our” or “us”) welcomes
+          Dear User, Thank you for choosing PRNC wallet as your crypto assets
+          wallet. PRNC wallet Inc. (the “Company”, “we”, “our” or “us”) welcomes
           you (the “User(s)”, or “you”) to our crypto wallet service known as
-          PRN wallet(The “Service”). We hereby remind you that you must
+          PRNC wallet(The “Service”). We hereby remind you that you must
           carefully read the full content of this agreement before using our
-          mobile application “PRN wallet”. You must make sure that you fully
+          mobile application “PRNC wallet”. You must make sure that you fully
           understand the whole agreement and evaluate the risks of using PRN
           wallet on your own. You may use the Service only in accordance with
           the following terms and conditions.
@@ -24,7 +24,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           1. Acceptance of the Terms
         </Text>
         <Text>
-          By accessing or using PRN wallet(the “Service”) you acknowledge that
+          By accessing or using PRNC wallet(the “Service”) you acknowledge that
           you have read and understood the following terms of use and you agree
           to be bound by them and to comply with all the laws and regulations
           regarding your use of the Service, and you acknowledge that these
@@ -34,7 +34,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           use by individuals who are under the age of eighteen (18) years old.
         </Text>
         <Text style={{fontWeight: '700', fontSize: 20}}>
-          2. PRN wallet Services
+          2. PRNC wallet Services
         </Text>
         <Text>
           Import/Create an account: The Service enables Users to import or
@@ -65,7 +65,7 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           transfer tokens, you shall be solely responsible for the consequences
           of your mishandling of the transfer and the Company will not be able
           to cancel or rollback any transactions you made. Users shall fully
-          understand that PRN wallet do not have the responsibility to do the
+          understand that PRNC wallet do not have the responsibility to do the
           due diligence on any service provided by third-party-developed Dapps
           or Smart Contracts. You shall check the official blockchain system or
           other blockchain tools when you receive an alert such as “transaction
@@ -121,11 +121,11 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           6. Intellectual Property
         </Text>
         <Text>
-          PRN wallet is a mobile application developed and owned by PRN wallet
+          PRNC wallet is a mobile application developed and owned by PRNC wallet
           Inc. and Inc. and protected by international copyright, patent and
           other intellectual property or proprietary rights laws. All contents,
           including trademarks, logos, graphics, videos, audios, articles,
-          archives, information and this agreement, displayed in PRN wallet are
+          archives, information and this agreement, displayed in PRNC wallet are
           owned by the Company or the third party licensors. No one shall use,
           reproduce, modify, decompile, distribute or issue the above-mentioned
           application and contents without prior written consent from the
@@ -138,8 +138,8 @@ const TermsofServiceScreen = ({navigation, route, myWallets, current}) => {
           The company reserves the right to modify or replace these conditions
           at any time. Your continued use of the Service signifies your
           acceptance of any adjustment to these terms. If you do not agree with
-          the modifications, you shall cease to use PRN wallet immediately. Use
-          of PRN wallet by you after any modification to this agreement
+          the modifications, you shall cease to use PRNC wallet immediately. Use
+          of PRNC wallet by you after any modification to this agreement
           constitutes your acceptance of this agreement as modified. 8.
           Disclaimer and Limitation of Liability This site and its components
           are offered for informational purposes only; this site shall not be

@@ -101,42 +101,6 @@ const WalletScreen = ({
     fetchBlogArticles();
   }, []);
 
-  useEffect(() => {
-    const firebaseSync = async () => {
-      const uid = uuid.v4();
-      registerUuidConnect(uid);
-
-      firestore()
-        .collection('user')
-        .doc(uuidMobile || uid)
-        .get()
-        .then(documentSnapshot => {
-          if (documentSnapshot.exists) {
-            firestore()
-              .collection('user')
-              .doc(uuidMobile || uid)
-              .update({
-                myWallets,
-              })
-              .then(() => {
-                console.log('User added!');
-              });
-          } else {
-            firestore()
-              .collection('user')
-              .doc(uuidMobile || uid)
-              .set({
-                myWallets,
-              })
-              .then(() => {
-                console.log('User added!');
-              });
-          }
-        });
-    };
-    firebaseSync();
-  }, []);
-
   const onRefresh = () => {
     setRefreshing(true);
   };

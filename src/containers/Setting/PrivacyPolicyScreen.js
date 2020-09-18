@@ -9,8 +9,8 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
       <View style={{margin: 20}}>
         <Text>Effective date: April 30, 2020</Text>
         <Text>
-          Effective date: January 01, 2019 PRN wallet Inc. ("us", "we", or
-          "our") operates the website and the “PRN wallet” mobile application
+          Effective date: January 01, 2019 PRNC wallet Inc. ("us", "we", or
+          "our") operates the website and the “PRNC wallet” mobile application
           (the "Service"). This page informs you of our policies regarding the
           collection, use, and disclosure of personal data when you use our
           Service and the choices you have associated with that data. We use
@@ -32,8 +32,8 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
           information may include, but is not limited to: Transaction records
           and wallet accounts(addresses) Operation records Cookies and Usage
           Data Mobile device information You confirm that your Wallet Private
-          Keys, Recovery Phrases and Password are not stored on PRN wallet’s
-          servers. PRN wallet Inc. does not provide the service to restore your
+          Keys, Recovery Phrases and Password are not stored on PRNC wallet’s
+          servers. PRNC wallet Inc. does not provide the service to restore your
           Wallet Private Keys, Recovery Phrases, Password. Usage Data We may
           also collect information that your browser sends whenever you visit
           our Service or when you access the Service by or through a mobile
@@ -63,7 +63,7 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
         </Text>
         <Text style={{fontWeight: '700', fontSize: 20}}>Use of Data</Text>
         <Text>
-          PRN wallet, Inc. uses the collected data for various purposes: To
+          PRNC wallet, Inc. uses the collected data for various purposes: To
           provide and maintain the Service To notify you about changes to our
           Service To allow you to participate in interactive features of our
           Service when you choose to do so To provide customer care and support
@@ -81,7 +81,7 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
           that we transfer the data, including Personal Data, to Taiwan and
           process it there. Your consent to this Privacy Policy followed by your
           submission of such information represents your agreement to that
-          transfer. PRN wallet, Inc. will take all steps reasonably necessary to
+          transfer. PRNC wallet, Inc. will take all steps reasonably necessary to
           ensure that your data is treated securely and in accordance with this
           Privacy Policy and no transfer of your Personal Data will take place
           to an organization or a country unless there are adequate controls in
@@ -92,7 +92,7 @@ const PrivacyPolicyScreen = ({navigation, route, myWallets, current}) => {
           Disclosure Of Data
         </Text>
         <Text>
-          Legal Requirements PRN wallet, Inc. may disclose your Personal Data in
+          Legal Requirements PRNC wallet, Inc. may disclose your Personal Data in
           the good faith belief that such action is necessary to: To comply with
           a legal obligation To protect and defend the rights or property of PRN
           wallet, Inc. To prevent or investigate possible wrongdoing in
