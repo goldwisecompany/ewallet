@@ -13,6 +13,7 @@ import {colors} from '../../styles';
 import firestore from '@react-native-firebase/firestore';
 import {delay} from '../../utils/index';
 import {web3, tronWeb, bitbox} from '../../services/wallet';
+import {COIN_SYMBOL} from '../../constants';
 import Locale from 'ewallet/src/locales';
 
 const BCH = require('../../assets/BCH.png');
@@ -31,7 +32,7 @@ const TransactionHistoryScreen = ({
   currency,
   uuidMobile,
 }) => {
-  const coin = (route.params && route.params.coin) || 'PRNC';
+  const coin = (route.params && route.params.coin) || 'PRN';
   const [isInit, setIsInit] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [transactionList, setTransactionList] = useState([]);
@@ -62,7 +63,7 @@ const TransactionHistoryScreen = ({
       BTC: BTC,
       ETH: ETH,
       TRX: TRX,
-      PRNC: PRNC,
+      PRN: PRNC,
       USDT: USDT,
     };
     return imageList[theCoin];
@@ -255,9 +256,9 @@ const TransactionHistoryScreen = ({
               }
             }
           }
-        } else if (route.params.coin === 'PRNC') {
+        } else if (route.params.coin === 'PRN') {
           // TODO: Migration to mainnet
-          const address = myWallets[current].PRNC.address;
+          const address = myWallets[current].PRN.address;
           const res = await fetch(
             `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&startblock=0&endblock=999999999&sort=asc&apikey=P2ZMGHA8ME6ZQXMAHDNWSFZMG7U322VW8N`,
           );
@@ -265,7 +266,7 @@ const TransactionHistoryScreen = ({
           const {result} = data;
           if (result.length > 0) {
             const newList = result
-              .filter(item => item.tokenName === 'PRN Token') // TODO: change name
+              .filter(item => item.tokenName === 'PRNCToken') // TODO: change name
               .map(tx => ({
                 ...tx,
                 status:
@@ -273,7 +274,7 @@ const TransactionHistoryScreen = ({
                     ? 'Send'
                     : 'Receive',
                 date: new Date(tx.timeStamp * 1000).toLocaleString(),
-                value: web3.utils.fromWei(tx.value, 'wei'),
+                value: web3.utils.fromWei(tx.value, 'ether'),
                 note: (mappingHash && mappingHash[tx.hash]) || '',
               }))
               .sort(
@@ -349,7 +350,7 @@ const TransactionHistoryScreen = ({
             </View>
             <View style={styles.coin}>
               <Text style={{fontSize: 16}}>{`${item.value} ${
-                route.params.coin
+                COIN_SYMBOL[route.params.coin]
               }`}</Text>
             </View>
           </View>
@@ -374,7 +375,7 @@ const TransactionHistoryScreen = ({
         </View>
         <View style={styles.section}>
           <Text>
-            {`${route.params.balance} ${coin} = ${
+            {`${route.params.balance} ${COIN_SYMBOL[coin]} = ${
               route.params.balancePrice
             } ${currency}`}
           </Text>

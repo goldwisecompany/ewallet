@@ -41,7 +41,7 @@ const SendScreen = ({
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
   const [coin, setCoin] = useState(
-    (route.params && route.params.coin) || 'PRNC',
+    (route.params && route.params.coin) || 'PRN',
   );
   const [pin, setPin] = useState('');
   const [pending, setPending] = useState(false);
@@ -125,7 +125,7 @@ const SendScreen = ({
       coin === 'ETH' ||
       coin === 'TRX' ||
       coin === 'BTC' ||
-      coin === 'PRNC' ||
+      coin === 'PRN' ||
       coin === 'BCH' ||
       coin === 'USDT'
     ) {
@@ -190,7 +190,7 @@ const SendScreen = ({
           myWallets[current][coin].address,
           myWallets[current][coin].phrase, // !! Alert
         );
-      } else if (coin === 'PRNC') {
+      } else if (coin === 'PRN') {
         const receipt = await transferPrn(
           receiver,
           amount,
@@ -278,7 +278,7 @@ const SendScreen = ({
               placeholder={{}}
               value={coin}
               items={[
-                {label: 'PRNC', value: 'PRNC'},
+                {label: 'PRNC', value: 'PRN'},
                 {label: 'BTC', value: 'BTC'},
                 {label: 'ETH', value: 'ETH'},
                 {label: 'TRX', value: 'TRX'},

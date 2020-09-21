@@ -446,7 +446,10 @@ export const transferBtc = async (receiver, amount, sender, privateKey) => {
 
 export const transferPrn = async (receiver, amount, sender, privateKey) => {
   const inputData0 = receiver.substring(2).padStart(64, '0');
-  const inputData1 = bnToHex(web3.utils.toWei(amount, 'wei')).padStart(64, '0');
+  const inputData1 = bnToHex(web3.utils.toWei(amount, 'ether')).padStart(
+    64,
+    '0',
+  );
   const txData = `0xa9059cbb${inputData0}${inputData1}`.toLowerCase();
 
   try {

@@ -6,12 +6,17 @@ import {updateBlogs} from '../../actions/index';
 
 const PRNC = require('../../assets/imgPRN.png');
 
-const SplashScreen = ({navigation, isGenerating, updateBlogsConnect}) => {
+const SplashScreen = ({
+  navigation,
+  isGenerating,
+  myWallets,
+  updateBlogsConnect,
+}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.reset({
         index: 0,
-        routes: [{name: isGenerating ? 'Launch' : 'Main'}],
+        routes: [{name: myWallets.length === 0 ? 'Launch' : 'Main'}],
       });
     }, 3000);
     return () => clearTimeout(timer);
@@ -51,6 +56,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+  myWallets: state.wallet.myWallets,
   isGenerating: state.wallet.isGenerating,
 });
 

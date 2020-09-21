@@ -20,6 +20,7 @@ import {web3, tronWeb, erc20Abi, bitbox} from '../../services/wallet';
 import {colors, fonts} from '../../styles';
 import {getPrice} from '../../services/api';
 import {updateBlogs, registerUuid} from '../../actions/index';
+import {COIN_SYMBOL} from '../../constants';
 import {floor10} from '../../services/math';
 import Locale from 'ewallet/src/locales';
 
@@ -46,7 +47,7 @@ const WalletScreen = ({
   uuidMobile,
 }) => {
   const [balances, setBalances] = useState({
-    PRNC: '0',
+    PRN: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
@@ -55,7 +56,7 @@ const WalletScreen = ({
   });
 
   const [priceList, setPriceList] = useState({
-    PRNC: '0',
+    PRN: '0',
     BTC: '0',
     BCH: '0',
     ETH: '0',
@@ -111,12 +112,12 @@ const WalletScreen = ({
     {
       title: Locale['TEXT__SEND'],
       icon: 'arrow-upward',
-      onPress: () => navigation.navigate('Send', {coin: 'PRNC'}),
+      onPress: () => navigation.navigate('Send', {coin: 'PRN'}),
     },
     {
       title: Locale['TEXT__RECEIVE'],
       icon: 'arrow-downward',
-      onPress: () => navigation.navigate('Receive', {coin: 'PRNC'}),
+      onPress: () => navigation.navigate('Receive', {coin: 'PRN'}),
     },
     {
       title: Locale['TEXT__SCAN'],
@@ -131,7 +132,7 @@ const WalletScreen = ({
       BTC: BTC,
       ETH: ETH,
       TRX: TRX,
-      PRNC: PRNC,
+      PRN: PRNC,
       USDT: USDT,
     };
     return imageList[theCoin];
@@ -172,19 +173,20 @@ const WalletScreen = ({
       }
 
       // TODO: Migrate to mainnet
-      const prnTokenContract = new web3.eth.Contract(
+      const prncTokenContract = new web3.eth.Contract(
         erc20Abi,
-        '0x222258845094017fEB89efBaf2776e1F19951dfd', // Mainnet
+        // '0x222258845094017fEB89efBaf2776e1F19951dfd', // Mainnet Old
+        '0x7aeD3C28FA8F6580CbB6F5eD14888B8d923608dc', // Mainnet New
         // '0x3A47a04217181D9a3994Dc0675f56A2132f0Aa2a', // Ropsten
       );
 
-      let prnbalance = 0;
+      let prncbalance = 0;
       try {
-        prnbalance = await prnTokenContract.methods
+        prncbalance = await prncTokenContract.methods
           .balanceOf(myWallets[current].ETH.address)
           .call();
       } catch (error) {
-        prnbalance = 0;
+        prncbalance = 0;
       }
 
       const usdtTokenContract = new web3.eth.Contract(
@@ -201,7 +203,7 @@ const WalletScreen = ({
         btcSatoshiBalance,
       ).toString();
 
-      const prnBalance = web3.utils.fromWei(prnbalance || '0', 'wei');
+      const prnBalance = web3.utils.fromWei(prncbalance || '0', 'ether');
 
       const usdtBalance = web3.utils.fromWei(usdtbalance || '0', 'Mwei');
 
@@ -211,7 +213,7 @@ const WalletScreen = ({
         BTC: btcBalance,
         ETH: ethBalance,
         TRX: trxBalance,
-        PRNC: prnBalance,
+        PRN: prnBalance,
         USDT: usdtBalance,
       });
       let priceData = [];
@@ -222,7 +224,7 @@ const WalletScreen = ({
       }
       if (priceData.length !== 0) {
         setPriceList({
-          PRNC: 1 * Number(prnBalance), // usd dollar
+          PRN: 1 * Number(prnBalance), // usd dollar
           BTC: Number(priceData[0][0].price_usd) * Number(btcBalance),
           BCH: Number(priceData[1][0].price_usd) * Number(bchBalance),
           ETH: Number(priceData[2][0].price_usd) * Number(ethBalance),
@@ -270,12 +272,12 @@ const WalletScreen = ({
 
   const renderItem = ({item}) => (
     <ListItem
-      title={item}
+      title={COIN_SYMBOL[item]}
       leftIcon={<Image style={styles.icon} source={renderImage(item)} />}
       rightTitle={
         <View style={styles.rightTitleContainer}>
           <Text style={styles.rightTitle}>
-            {`${floor10(balances[item], -8)} ${item}`}
+            {`${floor10(balances[item], -8)} ${COIN_SYMBOL[item]}`}
           </Text>
           <Text style={styles.rightTitle}>
             {`${toLocaleCurrency(priceList[item])} ${currency}`}
@@ -365,7 +367,7 @@ const WalletScreen = ({
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={keyExtractor}
-          data={['PRNC', 'BTC', 'ETH', 'TRX', 'USDT']}
+          data={['PRN', 'BTC', 'ETH', 'TRX', 'USDT']}
           renderItem={renderItem}
           scrollEnabled={true}
         />

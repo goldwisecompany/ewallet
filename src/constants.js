@@ -25,3 +25,12 @@ export const CURRENCY = {
   TWD: Locale['CURRENCY__TWD'],
   USD: Locale['CURRENCY__USD'],
 };
+
+export const COIN_SYMBOL = {
+  PRN: 'PRNC',
+  BTC: 'BTC',
+  BCH: 'BCH',
+  ETH: 'ETH',
+  TRX: 'TRX',
+  USDT: 'USDT',
+};
