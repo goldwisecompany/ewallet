@@ -235,7 +235,7 @@ const WalletScreen = ({
         });
         setTotalPrice(
           (
-            0.1 * Number(prnBalance) +
+            1 * Number(prnBalance) +
             Number(priceData[0][0].price_usd) * Number(btcBalance) +
             Number(priceData[1][0].price_usd) * Number(bchBalance) +
             Number(priceData[2][0].price_usd) * Number(ethBalance) +
