@@ -5,6 +5,7 @@ import {Button, CheckBox, ListItem, Text} from 'react-native-elements';
 import {changeWallet, recreateWallet} from '../../actions/index';
 import {colors} from '../../styles';
 import Locale from 'ewallet/src/locales';
+import {COIN_SYMBOL} from '../../constants';
 
 const WalletManagementScreen = ({
   navigation,
@@ -42,7 +43,10 @@ const WalletManagementScreen = ({
         keyExtractor={keyExtractor}
         data={Object.keys(item)}
         renderItem={({item}) => (
-          <ListItem title={item} subtitle={myWallets[index][item].address} />
+          <ListItem
+            title={COIN_SYMBOL[item]}
+            subtitle={myWallets[index][item].address}
+          />
         )}
         scrollEnabled={false}
       />

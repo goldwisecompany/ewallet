@@ -455,7 +455,7 @@ export const transferPrn = async (receiver, amount, sender, privateKey) => {
   try {
     const receipt = await web3.eth.sendTransaction({
       from: sender,
-      to: '0x222258845094017fEB89efBaf2776e1F19951dfd',
+      to: '0x7aeD3C28FA8F6580CbB6F5eD14888B8d923608dc',
       value: '0',
       gas: 90000,
       data: txData,

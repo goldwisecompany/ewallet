@@ -7,9 +7,11 @@ import uuid from 'react-native-uuid';
 import {
   Alert,
   Dimensions,
+  Linking,
   FlatList,
   Image,
   View,
+  TouchableOpacity,
   RefreshControl,
   StyleSheet,
 } from 'react-native';
@@ -110,17 +112,17 @@ const WalletScreen = ({
 
   const buttonList = [
     {
-      title: Locale['TEXT__SEND'],
+      title: Locale.TEXT__SEND,
       icon: 'arrow-upward',
       onPress: () => navigation.navigate('Send', {coin: 'PRN'}),
     },
     {
-      title: Locale['TEXT__RECEIVE'],
+      title: Locale.TEXT__RECEIVE,
       icon: 'arrow-downward',
       onPress: () => navigation.navigate('Receive', {coin: 'PRN'}),
     },
     {
-      title: Locale['TEXT__SCAN'],
+      title: Locale.TEXT__SCAN,
       icon: 'crop-free',
       onPress: () => navigation.navigate('Scanner'),
     },
@@ -306,13 +308,21 @@ const WalletScreen = ({
             dotColor={colors.mainDark}
             activeDotColor={colors.mainLight}>
             {blogs.map(item => (
-              <View style={styles.slide} key={item.id}>
+              <TouchableOpacity
+                activeOpacity={1}
+                style={styles.slide}
+                key={item.id}
+                onPress={() => {
+                  if (item.redirect_url) {
+                    Linking.openURL(item.redirect_url);
+                  }
+                }}>
                 <Image
                   resizeMode="contain"
                   style={styles.image}
                   source={{uri: item.originalImageUrl || item.image}}
                 />
-              </View>
+              </TouchableOpacity>
             ))}
           </Swiper>
         )}
@@ -367,7 +377,7 @@ const WalletScreen = ({
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           keyExtractor={keyExtractor}
-          data={['PRN', 'BTC', 'ETH', 'TRX', 'USDT']}
+          data={['PRN', 'BTC', 'ETH', 'USDT', 'TRX']}
           renderItem={renderItem}
           scrollEnabled={true}
         />
